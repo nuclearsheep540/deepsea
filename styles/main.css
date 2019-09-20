@@ -41,13 +41,27 @@ main {
   flex-direction: column;
   min-height: 500px;
 }
+/* STAGE ARENA */
+
 .stage-container {
   display: flex;
   flex-direction: row;
-  border: 2px solid black;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
   background-color: rgba(50,50,50,0.5);
-  min-height: 395px;
+  min-height: 595px;
   margin: 20px 0px;
+}
+.stage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 2px solid black;
+  background-color: rgba(245, 245, 245, 0.461);
+  height: 568px;
+  min-width: 968px;
+  margin: 30px auto;
+  padding: 4px;
 }
 .ui-container {
   display: flex;
@@ -65,7 +79,6 @@ min-height: 45px;
 display: flex;
 justify-content: space-around;
 margin: auto;
-
 }
 .cannon {
   display: block;
@@ -74,20 +87,42 @@ margin: auto;
   background-color: whitesmoke;
   min-height: 50px;
   min-width: 600px;
-  bottom: 10px;
+  bottom: 80px;
   margin: auto;
 }
-.stage {
+/* END OF STAGE */
+
+/* STAGE GRID */
+.grid {
+  top:0px;
+  align-items: center;
   display: flex;
-  flex-direction: column;
+  flex-grow: 1;
+  flex-wrap: wrap;
   justify-content: center;
-  border: 2px solid black;
-  background-color: whitesmoke;
-  height: 320px;
-  width: 640px;
-  margin: 30px auto;
-  padding: 4px;
+  max-height: 432px;
+  max-width: 932px;
+  margin: 0 auto;
 }
+
+.grid div {
+  border-left: 1px solid rgba(0, 0, 0, 0.214);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.214);
+  margin: 0px;
+  flex-grow: 1;
+  height: 50px;
+  width: 50px;
+}
+
+.player {
+  background-color: rgba(255, 0, 0, 0.488);
+}
+
+.attack {
+  background-color: rgba(0, 0, 0, 0.488);
+}
+/* END OF STAGE GRID */
+
 
 footer{
   position: fixed;
