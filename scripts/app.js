@@ -52,14 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
       stage2.classList.add('hide')
       stage3.classList.add('hide')
       cannon.classList.add('hide')
-      document.removeEventListener('keydown', (e) => {
-        console.log('game')
-      })
     }, 1000)
     setTimeout(function () {
       stage0.classList.remove('hide')
       console.log('returned home')
     }, 1500)
+
   })// end of back button
 
   // NEXT BUTTON
@@ -97,6 +95,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // ************ GAME LOGIC **************//
   // **************************************//
 
+  //scoreboard
+  let score = 0
+  const ui = document.querySelectorAll('.ui')
+  ui[0].textContent = `Score \n ${score}`
+
+  //points
+  const boatPoints = 5
+  const lootPoints = 10
+  const trapPoints = -5
+
+
+
+
+
+
+
   const play = document.querySelector('#play')
   //SHOW WHERE THE PLAYER IS BY UPDATING CLASS
   function handleClick(e) {
@@ -113,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const width = 18
     const cells = []
     let playerIdx = 81
-  
+
 
     //GENERATE 9 x 18 GAMEBOARD
     for (let i = 0; i < width * 9; i++) {
@@ -121,12 +135,27 @@ document.addEventListener('DOMContentLoaded', () => {
       grid.appendChild(cell)
       cells.push(cell)
       cell.addEventListener('click', handleClick)
-
     }//END OF GAME BOARD GEN
 
+    //hard code boats
+    let boats = cells.slice(4, 7)
+    boats.forEach((e) => {
+      e.classList.add('boat')
+    })
+    //hard code loot
+    let loot = [cells[1], cells[55], cells[32]]
+    loot.forEach((e) => {
+      e.classList.add('loot')
+    })
+    //hard code traps
+    let trap = [cells[10], cells[110], cells[132]]
+    trap.forEach((e) => {
+      e.classList.add('trap')
+    })
 
     //START PLAYER @ playerIdx
     cells[playerIdx].classList.add('player')
+    
 
     //KEY DOWN LISTENER >> MOVE PLAYER
     document.addEventListener('keydown', (e) => {
@@ -162,8 +191,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e) => {
 
       if (e.keyCode === 32) {
-        cells[playerIdx].classList.add('attack')
-        console.log(e.keyCode)
+        if (cells[playerIdx].classList === 'loot'){
+          console.log('loot')
+        } else {
+          cells[playerIdx].classList.add('attack')
+          console.log(playerIdx)
+        }
+        
       }
 
       // add if statement, if attack hit = true

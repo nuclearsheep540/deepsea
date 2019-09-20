@@ -1,3 +1,4 @@
+/* MAIN SITE */
 body {
   background: rgb(30, 146, 255);
   padding: 0px;
@@ -153,6 +154,21 @@ margin: auto;
 
 .attack {
   background-color: rgba(0, 0, 0, 0.488);
+}
+
+
+/*  */
+/* OBJECTS */
+/*  */
+.loot{
+background-color: gold;
+}
+.boat{
+background-color: rgb(116, 61, 13)
+}
+.trap{
+background-color: blueviolet
+
 }
 
 /*  */
