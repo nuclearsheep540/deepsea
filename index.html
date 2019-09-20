@@ -10,7 +10,7 @@
   <script src='scripts/game.js'></script>
   <title>Deep Sea Battle</title>
   <script>
-  
+
   </script>
 </head>
 
@@ -33,41 +33,46 @@
 
     </div>
 
-    <div class='stage-container'> 
-    <!-- open container that holds the stage -->
-    <!-- never hide this -->
-    <!-- hide / show stages to change state -->
-      
-    <div class="stage stage0">
-      <p>SELECT MODE</p>
-        <button class='mode' id='tutorial'>Tutorial</button>
-        <button class='mode' id='play'>Play</button>
-     </div>
-    
-    <div class="stage stage1 hide">
-      <p>stage1-grid</p>
+    <div class='stage-container'>
+      <!-- open container that holds the stage -->
+      <!-- never hide this -->
+      <!-- hide / show stages to change state -->
+
+      <div class="stage stage0">
+        <p>SELECT MODE</p>
+        <button class='mode' id='tutorial'>How To Play</button>
+        <button class='mode' id='play'>Quick Battle</button>
+        <button class='mode' id='story'>Story Mode</button>
+        <button class='mode' id='options'>Music On/Off</button>
+      </div>
+      <!-- end of stage 0 -->
+
+      <div class="stage stage1 hide">
+        <p>stage1-grid</p>
 
 
-    </div>
-    <!-- end of stage 1 -->
-    <div class='stage stage2 hide'>
+      </div>
+      <!-- end of stage 1 -->
+      <!--  -->
+      <div class='stage stage2 hide'>
 
 
-      <div class="grid"></div>
-    </div>
-    <!-- end of stage 2 -->
-
-    <div class='stage stage3 hide'>
+        <div class="grid"></div>
+      </div>
+      <!-- end of stage 2 -->
+      <!--  -->
+      <div class='stage stage3 hide'>
 
 
         <p>stage3-grid</p>
       </div>
-      <!-- end of stage 2 -->
+      <!-- end of stage 3 -->
+      <!--  -->
     </div>
     <!-- close the container holding the stage -->
-      <div class='cannon hide'>Cannon</div>
-      <!-- canon bar -->
-</div>
+    <div class='cannon hide'>Cannon</div>
+    <!-- canon bar -->
+    </div>
   </main>
   <footer>
     <span>Website copyright 2019 Matt Davey</span>
