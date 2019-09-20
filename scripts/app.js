@@ -98,14 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
   //scoreboard
   let score = 0
   const ui = document.querySelectorAll('.ui')
-  ui[0].textContent = `Score \n ${score}`
+  window.addEventListener('keydown', () => {
+    ui[0].textContent = `Score \n ${score}`
 
-  //points
-  const boatPoints = 5
-  const lootPoints = 10
-  const trapPoints = -5
-
-
+  })
 
 
 
@@ -134,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const cell = document.createElement('div')
       grid.appendChild(cell)
       cells.push(cell)
-      cell.addEventListener('click', handleClick)
+      // cell.addEventListener('click', handleClick)
     }//END OF GAME BOARD GEN
 
     //hard code boats
@@ -191,8 +187,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (e) => {
 
       if (e.keyCode === 32) {
-        if (cells[playerIdx].classList === 'loot'){
+        if (cells[playerIdx].classList.contains('loot')) {
           console.log('loot')
+          return score += 15
+        } else if (cells[playerIdx].classList.contains('boat')) {
+          console.log('boat')
+          return score += 5
+        } else if (cells[playerIdx].classList.contains('trap')) {
+          console.log('trap')
+          return score -= 5
         } else {
           cells[playerIdx].classList.add('attack')
           console.log(playerIdx)
