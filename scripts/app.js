@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modebutton = document.querySelectorAll('.mode')
   const ready = document.querySelector('.readystate')
   const stage0 = document.querySelector('.stage0')
+  const options = document.querySelector('#options')
   const inventory = document.querySelector('.inventory')
   const stage1 = document.querySelector('.stage1')
   const stage2 = document.querySelector('.stage2')
@@ -16,9 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const ambi = new Audio('seasong.mp3')
   const bgm = new Audio('bgm.mp3')
   let gamestate = false
-  const nothing = null
+
 
   readyState()
+  
 
 
   // ^^^^^ declare variables above ^^^^^
@@ -38,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
           stage0.classList.remove('hide')
           ambi.play()
           bgm.play()
-        } else if (gamestate !== false){
+        } else if (gamestate !== false) {
           return
         }
       })
@@ -53,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
       stage1.classList.remove('hide')
       cannon.classList.remove('hide')
       console.log('gamestart complete')
-      console.log('gamestate '+gamestate)
+      console.log('gamestate ' + gamestate)
     }, 1500)
   }// end of GameStartTutorial
 
@@ -66,11 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
       cannon.classList.remove('hide')
       inventory.classList.remove('hide')
       console.log('gamestart complete')
-      console.log('gamestate '+gamestate)
+      console.log('gamestate ' + gamestate)
       //LOAD THE CANNONBALLS
-      let cannonball = 0
       const timerId = setInterval(() => {
-
         const balls = document.createElement('div') //the object
         cannon.appendChild(balls) //the html object storing the array
         cannonballs.push(balls) //the array pushing the objects
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     grid.innerHTML = ''
     cannon.innerHTML = '<p>Cannonballs</p>'
     gamestate = false
-    console.log('gamestate '+gamestate)
+    console.log('gamestate ' + gamestate)
 
     setTimeout(function () {
       stage1.classList.add('hide')
@@ -138,9 +138,16 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (e.target.id === 'play') {
         console.log('quickplay starting')
         GameQuickPlay()
+      } else if (e.target.id === 'options') {
+        console.log('toggled music')
+        bgm.paused ? options.innerHTML = 'Music On' : options.innerHTML = 'Music Off'
+        bgm.paused ? bgm.play() : bgm.pause()
       }
+
     })//end of event listener
   )//end of modebutton
+
+
 
   // **************************************//
   // ************ GAME LOGIC **************//
@@ -155,6 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
   })
   let health = [1, 1, 1]
   ui[2].textContent = `${health}`
+
 
 
 
@@ -176,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const width = 20
     const cells = []
     let playerIdx = 81
-    console.log('gamestate '+gamestate)
+    console.log('gamestate ' + gamestate)
 
     //GAME BOARD GEN >> GENERATE 9 x 18 GAMEBOARD
     if (gamestate === false) {
@@ -193,28 +201,65 @@ document.addEventListener('DOMContentLoaded', () => {
       return
     }//END OF GAME BOARD GEN
 
+    //  COMPUTER GENERATED OBJECTS
+    function randomiseOne(max) {
+      return Math.floor(Math.random() * Math.floor(max))
+    }
+    function retry () {
+      // re call randomise on the const until condition is met
+    }
+    const loot1 = (randomiseOne(219))
+    const loot2 = (randomiseOne(219))
+    const loot3 = (randomiseOne(219))
+    const loot4 = (randomiseOne(219))
+    const makeLoot = [cells[loot1], cells[loot2], cells[loot3], cells[loot4]]
+    makeLoot.forEach((e, index) => {
+      console.log('loot ' + loot1,loot2,loot3,loot4)
+      e.classList.add('loot')
+    })
+
+    const trap1 = (randomiseOne(219))
+    const trap2 = (randomiseOne(219))
+    const trap3 = (randomiseOne(219))
+    const trap4 = (randomiseOne(219))
+    const trap5 = (randomiseOne(219))
+    const makeTrap = [cells[trap1], cells[trap2], cells[trap3], cells[trap4], cells[trap5]]
+    makeTrap.forEach((e, index) => {
+      console.log('traps ' + trap1,trap2,trap3,trap4,trap5)
+      e.classList.add('trap')
+    })
+
+    const siren1 = (randomiseOne(219))
+    const siren2 = (randomiseOne(219))
+    const siren3 = (randomiseOne(219))
+    const makeSiren = [cells[trap1], cells[trap2], cells[trap3]]
+    makeSiren.forEach((e, index) => {
+      console.log('sirens ' + siren1,siren2,siren3)
+      e.classList.add('siren')
+    })
+  
 
 
     //hard code boats
-    let boats = cells.slice(4, 7)
-    boats.forEach((e) => {
-      e.classList.add('boat')
-    })
-    //hard code loot
-    let loot = [cells[1], cells[55], cells[32]]
-    loot.forEach((e) => {
-      e.classList.add('loot')
-    })
-    //hard code traps
-    let trap = [cells[10], cells[110], cells[132]]
-    trap.forEach((e) => {
-      e.classList.add('trap')
-    })
-    //hard code siren
-    let siren = [cells[102], cells[77]]
-    siren.forEach((e) => {
-      e.classList.add('siren')
-    })
+    // const boats = cells.slice(4, 7)
+    // boats.forEach((e) => {
+    //   e.classList.add('boat')
+    // })
+    // //hard code loot
+    // const loot = [cells[1], cells[55], cells[32]]
+    // loot.forEach((e) => {
+    //   e.classList.add('loot')
+    // })
+    // //hard code traps
+    // const trap = [cells[10], cells[110], cells[132]]
+    // trap.forEach((e) => {
+    //   e.classList.add('trap')
+    // })
+    // //hard code siren
+    // const siren = [cells[102], cells[77]]
+    // siren.forEach((e) => {
+    //   e.classList.add('siren')
+    // })
 
     //START PLAYER @ playerIdx
     cells[playerIdx].classList.add('player')
@@ -271,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cells[playerIdx].classList.remove('trap')
         cells[playerIdx].classList.add('hit')
         health.pop()
+        console.log(health + 'health')
         return ui[2].textContent = `${health}`
       } else if (cells[playerIdx].classList.contains('siren')) {
         console.log('you hit a siren... she steals 5 Doubloons')
@@ -285,7 +331,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function attackCheck() {
       //if the cell, the player is on has not been attacked and there are cannonballs
-      if (cells[playerIdx].classList.contains('attack') === false && cannon.childNodes.length > 1) {
+      if (cells[playerIdx].classList.contains('attack') === false && cannon.childNodes.length > 1 && health.length > 0) {
         let ammo = document.querySelector('.balls')
         cannon.removeChild(ammo)
         console.log(playerIdx)
@@ -297,9 +343,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return
       }
     }
+    
+
+    
     document.addEventListener('keydown', (e) => {
       if (e.keyCode === 32) {
         attackCheck()
+        if (health.length === 0){
+          console.log('you lose!')
+          alert('Avast ye swab! Ye dun out of ships! Better luck next time, eh?')
+        }
       }
     })
 
