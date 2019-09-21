@@ -1,3 +1,6 @@
+/* IMPORT */
+@import url('https://fonts.googleapis.com/css?family=Berkshire+Swash&display=swap');
+
 /* MAIN SITE */
 body {
   background: rgb(30, 146, 255);
@@ -72,7 +75,7 @@ span {
   flex-direction: row;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
-  background-color: rgba(50,50,50,0.5);
+  background-color: rgba(50,50,50,0.3);
   min-height: 640px;
   margin: 20px 0px;
 }
@@ -81,7 +84,7 @@ span {
   flex-direction: column;
   justify-content: center;
   border: 2px solid black;
-  background-color: rgba(245, 245, 245, 0.461);
+  background-color: rgba(245, 245, 245, 0.3);
   height: 568px;
   min-width: 968px;
   margin: 30px auto;
@@ -97,6 +100,8 @@ span {
   min-width: 700px;
 }
 .ui {
+font-family: 'Berkshire Swash', cursive; 
+font-size: 28px;
 border: 2px solid red;
 min-width: 180px;
 min-height: 45px;
@@ -148,12 +153,18 @@ margin: auto;
 /*  */
 /* PLAYER BASED STYLING */
 /*  */
-.player {
-  background-color: rgba(255, 0, 0, 0.488);
-}
 
 .attack {
-  background-color: rgba(0, 0, 0, 0.488);
+  background-color: rgba(255, 255, 255, 0.1)
+}
+.hit {
+  background-color: rgba(127, 255, 212, 0.6)
+}
+.miss {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.player {
+  background-color: rgba(255, 0, 0, 0.5);
 }
 
 
@@ -168,7 +179,6 @@ background-color: rgb(116, 61, 13)
 }
 .trap{
 background-color: blueviolet
-
 }
 
 /*  */

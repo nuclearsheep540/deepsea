@@ -9,7 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const cannon = document.querySelector('.cannon')
   const backButton = document.querySelector('button.left')
   const nextButton = document.querySelector('.right')
-
+  const grid = document.querySelector('.grid')
+ 
 
   // ^^^^^ declare variables above ^^^^^
 
@@ -47,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // back button
   backButton.addEventListener('click', e => {
+    grid.innerHTML = ''
+
     setTimeout(function () {
       stage1.classList.add('hide')
       stage2.classList.add('hide')
@@ -95,15 +98,17 @@ document.addEventListener('DOMContentLoaded', () => {
   // ************ GAME LOGIC **************//
   // **************************************//
 
-  //scoreboard
+  // **** USER INTERFACE **** //
   let score = 0
   const ui = document.querySelectorAll('.ui')
   window.addEventListener('keydown', () => {
-    ui[0].textContent = `Score \n ${score}`
+    ui[0].textContent = `Doubloons \n ${score}`
 
   })
+  let health = [1,1,1]
+  ui[2].textContent = `${health}`
 
-
+  let cannonball = 10
 
 
 
@@ -119,18 +124,26 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('game script enabled')
 
     //RULES OF THE GRID
-    const grid = document.querySelector('.grid')
+
     const width = 18
     const cells = []
     let playerIdx = 81
+    let gamestate = false
+    console.log(gamestate)
 
+    //GAME BOARD GEN >> GENERATE 9 x 18 GAMEBOARD
+    if (gamestate === false) {
 
-    //GENERATE 9 x 18 GAMEBOARD
-    for (let i = 0; i < width * 9; i++) {
-      const cell = document.createElement('div')
-      grid.appendChild(cell)
-      cells.push(cell)
-      // cell.addEventListener('click', handleClick)
+      for (let i = 0; i < width * 9; i++) {
+        const cell = document.createElement('div')
+        grid.appendChild(cell)
+        cells.push(cell)
+
+        // cell.addEventListener('click', handleClick)
+      } console.log('gamestate now active')
+      gamestate = true
+    } else {
+      return
     }//END OF GAME BOARD GEN
 
     //hard code boats
@@ -151,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //START PLAYER @ playerIdx
     cells[playerIdx].classList.add('player')
-    
+
 
     //KEY DOWN LISTENER >> MOVE PLAYER
     document.addEventListener('keydown', (e) => {
@@ -184,32 +197,50 @@ document.addEventListener('DOMContentLoaded', () => {
     })//END OF KEY DOWN LISTENER
 
     // ATTACK!
-    document.addEventListener('keydown', (e) => {
-
-      if (e.keyCode === 32) {
-        if (cells[playerIdx].classList.contains('loot')) {
-          console.log('loot')
-          return score += 15
-        } else if (cells[playerIdx].classList.contains('boat')) {
-          console.log('boat')
-          return score += 5
-        } else if (cells[playerIdx].classList.contains('trap')) {
-          console.log('trap')
-          return score -= 5
-        } else {
-          cells[playerIdx].classList.add('attack')
-          console.log(playerIdx)
-        }
-        
+    function attack() {
+      //if the cell player is on has loot boats or trap, mark a hit and check for loot
+      if (cells[playerIdx].classList.contains('loot', 'boat', 'trap')) {
+        console.log('landed a hit..')
+      } //if loot is the following, perform the loot check
+      if (cells[playerIdx].classList.contains('loot')) {
+        console.log('you found loot')
+        cells[playerIdx].classList.remove('loot')
+        cells[playerIdx].classList.add('hit')
+        return score += 15
+      } else if (cells[playerIdx].classList.contains('boat')) {
+        console.log('you hit a boat')
+        cells[playerIdx].classList.remove('boat')
+        cells[playerIdx].classList.add('hit')
+        return score += 5
+      } else if (cells[playerIdx].classList.contains('trap')) {
+        console.log('you hit trap')
+        cells[playerIdx].classList.remove('trap')
+        cells[playerIdx].classList.add('hit')    
+        health.pop()
+        return ui[2].textContent = `${health}`
+      } else {
+        cells[playerIdx].classList.add('miss')
+        cells[playerIdx].classList.add('hit')
       }
+    }
+    function attackCheck() {
+      //if the cell, the player is on has not been attacked and there are cannonballs
+      if (cells[playerIdx].classList.contains('attack') === false && cannonball > 0) {
+        console.log(playerIdx)
+        console.log('attack!..')
+        attack()
+        return cells[playerIdx].classList.add('attack')
+      } else {
+        console.log('cant attack here')
+        return
+      }
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.keyCode === 32) {
+        attackCheck()
+      }
+    })
 
-      // add if statement, if attack hit = true
-
-
-    })//END OF ATTACK
-
-
-
+    //END OF ATTACK
   })
-
 })
