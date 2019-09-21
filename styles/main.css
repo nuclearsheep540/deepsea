@@ -77,6 +77,19 @@ span {
 /*  */
 /* STAGING ARENA */
 /*  */
+.inventory {
+
+  position: fixed;
+  left: 5%;
+  top:240px;
+  min-height: 500px;
+  max-height: 500px;
+  min-width: 240px;
+
+  border: 2px solid brown;
+  border-radius: 4px;
+  background-color: rgba(165, 42, 42, 0.8);
+}
 .stage-container {
   display: flex;
   flex-direction: row;
@@ -84,6 +97,7 @@ span {
   border-bottom: 2px solid black;
   background-color: rgba(50,50,50,0.3);
   min-height: 640px;
+  min-width: 1500px;
   margin: 20px 0px;
 }
 .stage {
@@ -141,18 +155,17 @@ margin: auto;
   flex-grow: 1;
   flex-wrap: wrap;
   justify-content: center;
-  max-height: 432px;
-  max-width: 932px;
+  max-height: 480px;
+  max-width: 880px;
   margin: 0 auto;
 }
 
 .grid div {
-  border-left: 1px solid rgba(0, 0, 0, 0.214);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.214);
-  margin: 0px;
+  border: 1px solid rgba(0, 0, 0, 0.214);
+  margin: 0px 1px;
   flex-grow: 1;
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
 }
 /*  */
 /* END OF STAGE GRID */

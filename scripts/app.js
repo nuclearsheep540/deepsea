@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modebutton = document.querySelectorAll('.mode')
   const ready = document.querySelector('.readystate')
   const stage0 = document.querySelector('.stage0')
+  const inventory = document.querySelector('.inventory')
   const stage1 = document.querySelector('.stage1')
   const stage2 = document.querySelector('.stage2')
   const stage3 = document.querySelector('.stage3')
@@ -63,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(function () {
       stage2.classList.remove('hide')
       cannon.classList.remove('hide')
+      inventory.classList.remove('hide')
       console.log('gamestart complete')
       console.log('gamestate '+gamestate)
       //LOAD THE CANNONBALLS
@@ -91,13 +93,16 @@ document.addEventListener('DOMContentLoaded', () => {
   // back button
   backButton.addEventListener('click', e => {
     grid.innerHTML = ''
-    cannon.innerHTML = `<p>Cannonballs</p>`
+    cannon.innerHTML = '<p>Cannonballs</p>'
+    gamestate = false
+    console.log('gamestate '+gamestate)
 
     setTimeout(function () {
       stage1.classList.add('hide')
       stage2.classList.add('hide')
       stage3.classList.add('hide')
       cannon.classList.add('hide')
+      inventory.classList.add('hide')
     }, 1000)
     setTimeout(function () {
       stage0.classList.remove('hide')
@@ -168,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //RULES OF THE GRID
 
-    const width = 18
+    const width = 20
     const cells = []
     let playerIdx = 81
     console.log('gamestate '+gamestate)
@@ -176,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //GAME BOARD GEN >> GENERATE 9 x 18 GAMEBOARD
     if (gamestate === false) {
 
-      for (let i = 0; i < width * 9; i++) {
+      for (let i = 0; i < width * 11; i++) {
         const cell = document.createElement('div')
         grid.appendChild(cell)
         cells.push(cell)
@@ -237,9 +242,9 @@ document.addEventListener('DOMContentLoaded', () => {
         case 68: if (x < width - 1) playerIdx += 1
           break
         //down  
-        case 40: if (y < 8) playerIdx += width
+        case 40: if (y < 10) playerIdx += width
           break
-        case 83: if (y < 8) playerIdx += width
+        case 83: if (y < 10) playerIdx += width
           break
       }
       cells[playerIdx].classList.add('player')
@@ -288,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
         attack()
         return cells[playerIdx].classList.add('attack')
       } else {
-        console.log('cant attack here')
+        console.log('unable to attack, check attack conditions')
         return
       }
     }
