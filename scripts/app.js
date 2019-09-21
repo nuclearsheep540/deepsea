@@ -51,11 +51,11 @@ document.addEventListener('DOMContentLoaded', () => {
         cannonballs.forEach((item) => {
           return item.classList.add('balls')
         })
-      }, 200)
+      }, 150)
       setTimeout(() => {
         clearInterval(timerId)
         return
-      }, 2000)
+      }, 1500)
       //CANONBALLS READY
     }, 1500)
   }// end of setTimeout Function
@@ -256,7 +256,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function attackCheck() {
       //if the cell, the player is on has not been attacked and there are cannonballs
-      if (cells[playerIdx].classList.contains('attack') === false && cannonball > 0) {
+      if (cells[playerIdx].classList.contains('attack') === false && cannon.childNodes.length > 1) {
+        let ammo = document.querySelector('.balls')
+        cannon.removeChild(ammo)
         console.log(playerIdx)
         console.log('attack!..')
         attack()
