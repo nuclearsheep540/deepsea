@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
       stage1.classList.remove('hide')
       cannon.classList.remove('hide')
       console.log('gamestart complete')
-      console.log(gamestate)
+      console.log('gamestate '+gamestate)
     }, 1500)
   }// end of GameStartTutorial
 
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
       stage2.classList.remove('hide')
       cannon.classList.remove('hide')
       console.log('gamestart complete')
-      console.log(gamestate)
+      console.log('gamestate '+gamestate)
       //LOAD THE CANNONBALLS
       let cannonball = 0
       const timerId = setInterval(() => {
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const width = 18
     const cells = []
     let playerIdx = 81
-    console.log(gamestate)
+    console.log('gamestate '+gamestate)
 
     //GAME BOARD GEN >> GENERATE 9 x 18 GAMEBOARD
     if (gamestate === false) {
