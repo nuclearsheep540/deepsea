@@ -2,6 +2,7 @@ console.log('javascript enabled')
 document.addEventListener('DOMContentLoaded', () => {
   // vvvvv declare variables below vvvvv
   const modebutton = document.querySelectorAll('.mode')
+  const ready = document.querySelector('.readystate')
   const stage0 = document.querySelector('.stage0')
   const stage1 = document.querySelector('.stage1')
   const stage2 = document.querySelector('.stage2')
@@ -11,7 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const backButton = document.querySelector('button.left')
   const nextButton = document.querySelector('.right')
   const grid = document.querySelector('.grid')
+  const ambi = new Audio('seasong.mp3')
+  const bgm = new Audio('bgm.mp3')
+  let gamestate = false
+  const nothing = null
 
+  readyState()
 
 
   // ^^^^^ declare variables above ^^^^^
@@ -22,6 +28,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // these hide existing UI and setup Game mode UI ...
   // select tutorial or play
+  function readyState() {
+    if (gamestate === false) {
+      document.addEventListener('keydown', (e) => {
+        if (e.keyCode === 32 && gamestate === false) {
+          console.log('booting up...')
+          ready.classList.add('hide')
+          stage0.classList.remove('hide')
+          ambi.play()
+          bgm.play()
+        } else if (gamestate !== false){
+          return
+        }
+      })
+    }
+  }//end of readyState
+
   function GameStartTutorial() {
     setTimeout(function () {
       stage0.classList.add('hide')
@@ -30,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
       stage1.classList.remove('hide')
       cannon.classList.remove('hide')
       console.log('gamestart complete')
+      console.log(gamestate)
     }, 1500)
   }// end of GameStartTutorial
 
@@ -41,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
       stage2.classList.remove('hide')
       cannon.classList.remove('hide')
       console.log('gamestart complete')
+      console.log(gamestate)
       //LOAD THE CANNONBALLS
       let cannonball = 0
       const timerId = setInterval(() => {
@@ -67,6 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // back button
   backButton.addEventListener('click', e => {
     grid.innerHTML = ''
+    cannon.innerHTML = `<p>Cannonballs</p>`
 
     setTimeout(function () {
       stage1.classList.add('hide')
@@ -146,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const width = 18
     const cells = []
     let playerIdx = 81
-    let gamestate = false
     console.log(gamestate)
 
     //GAME BOARD GEN >> GENERATE 9 x 18 GAMEBOARD
