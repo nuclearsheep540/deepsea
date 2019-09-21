@@ -7,10 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const stage2 = document.querySelector('.stage2')
   const stage3 = document.querySelector('.stage3')
   const cannon = document.querySelector('.cannon')
+  const cannonballs = []
   const backButton = document.querySelector('button.left')
   const nextButton = document.querySelector('.right')
   const grid = document.querySelector('.grid')
- 
+
+
 
   // ^^^^^ declare variables above ^^^^^
 
@@ -31,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1500)
   }// end of GameStartTutorial
 
-  function GameStartPlay() {
+  function GameQuickPlay() {
     setTimeout(function () {
       stage0.classList.add('hide')
     }, 1000)
@@ -39,6 +41,22 @@ document.addEventListener('DOMContentLoaded', () => {
       stage2.classList.remove('hide')
       cannon.classList.remove('hide')
       console.log('gamestart complete')
+      //LOAD THE CANNONBALLS
+      let cannonball = 0
+      const timerId = setInterval(() => {
+
+        const balls = document.createElement('div') //the object
+        cannon.appendChild(balls) //the html object storing the array
+        cannonballs.push(balls) //the array pushing the objects
+        cannonballs.forEach((item) => {
+          return item.classList.add('balls')
+        })
+      }, 200)
+      setTimeout(() => {
+        clearInterval(timerId)
+        return
+      }, 2000)
+      //CANONBALLS READY
     }, 1500)
   }// end of setTimeout Function
 
@@ -88,8 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('tutorial starting')
         GameStartTutorial()
       } else if (e.target.id === 'play') {
-        console.log('game play starting')
-        GameStartPlay()
+        console.log('quickplay starting')
+        GameQuickPlay()
       }
     })//end of event listener
   )//end of modebutton
@@ -105,10 +123,10 @@ document.addEventListener('DOMContentLoaded', () => {
     ui[0].textContent = `Doubloons \n ${score}`
 
   })
-  let health = [1,1,1]
+  let health = [1, 1, 1]
   ui[2].textContent = `${health}`
 
-  let cannonball = 10
+
 
 
 
@@ -146,6 +164,8 @@ document.addEventListener('DOMContentLoaded', () => {
       return
     }//END OF GAME BOARD GEN
 
+
+
     //hard code boats
     let boats = cells.slice(4, 7)
     boats.forEach((e) => {
@@ -160,6 +180,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let trap = [cells[10], cells[110], cells[132]]
     trap.forEach((e) => {
       e.classList.add('trap')
+    })
+    //hard code siren
+    let siren = [cells[102], cells[77]]
+    siren.forEach((e) => {
+      e.classList.add('siren')
     })
 
     //START PLAYER @ playerIdx
@@ -213,12 +238,18 @@ document.addEventListener('DOMContentLoaded', () => {
         cells[playerIdx].classList.add('hit')
         return score += 5
       } else if (cells[playerIdx].classList.contains('trap')) {
-        console.log('you hit trap')
+        console.log('you hit trap and lost a life')
         cells[playerIdx].classList.remove('trap')
-        cells[playerIdx].classList.add('hit')    
+        cells[playerIdx].classList.add('hit')
         health.pop()
         return ui[2].textContent = `${health}`
+      } else if (cells[playerIdx].classList.contains('siren')) {
+        console.log('you hit a siren... she steals 5 Doubloons')
+        cells[playerIdx].classList.remove('siren')
+        cells[playerIdx].classList.add('hit')
+        return score -= 5
       } else {
+        console.log('you missed')
         cells[playerIdx].classList.add('miss')
         cells[playerIdx].classList.add('hit')
       }

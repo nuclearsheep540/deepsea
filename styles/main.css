@@ -15,6 +15,8 @@ h1 {
 }
 p {
   text-align: center;
+  font-family: 'Berkshire Swash', cursive; 
+  margin: 15px 30px;
 }
 .flex {
   display: flex;
@@ -110,12 +112,13 @@ justify-content: space-around;
 margin: auto;
 }
 .cannon {
-  display: block;
+  display: flex;
+  justify-items: left;
   position: relative;
   border: 2px solid black;
   background-color: whitesmoke;
   min-height: 50px;
-  min-width: 600px;
+  min-width: 700px;
   bottom: 80px;
   margin: auto;
 }
@@ -179,6 +182,17 @@ background-color: rgb(116, 61, 13)
 }
 .trap{
 background-color: blueviolet
+}
+.siren{
+  background-color: palevioletred
+}
+.balls {
+  background: black;
+  margin: 10px 10px;
+  border: 3px solid brown;
+  border-radius: 25px;
+  min-width: 25px;
+  min-height: 25px;
 }
 
 /*  */
