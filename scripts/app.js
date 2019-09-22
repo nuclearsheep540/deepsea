@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const stage0 = document.querySelector('.stage0')
   const options = document.querySelector('#options')
   const inventory = document.querySelector('.inventory')
+  const shop = document.querySelector('.shop')
   const stage1 = document.querySelector('.stage1')
   const stage2 = document.querySelector('.stage2')
   const stage3 = document.querySelector('.stage3')
@@ -22,8 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   readyState()
-
-
 
   // ^^^^^ declare variables above ^^^^^
 
@@ -69,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
       stage2.classList.remove('hide')
       cannon.classList.remove('hide')
       inventory.classList.remove('hide')
+      shop.classList.remove('hide')
       console.log('gamestart complete')
       console.log('gamestate ' + gamestate)
       //LOAD THE CANNONBALLS
@@ -116,13 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   })// end of back button
 
-  // NEXT BUTTON
-  // if (stage0.classList.contains('hide') ||
-  //     stage1.classList.contains('hide')) {
-  //   nextButton.style.visibility = 'hidden'
-  // } else {
-  //   nextButton.style.visibility = 'visible'
-  // }
   nextButton.addEventListener('click', e => {
     setTimeout(function () {
       stage2.classList.add('hide')
@@ -262,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //GENERATE TRAPS
     let trap = []
     function makeTrap() {
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 12; i++) {
         let add = (randomiseOne(219))
         trap.push(add)
         if (cells[add].classList.contains('boat') || cells[add].classList.contains('loot')) {
@@ -279,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //GENERATE LOOT
     let loot = []
     function makeLoot() {
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 20; i++) {
         let add = (randomiseOne(219))
         loot.push(add)
         if (cells[add].classList.contains('boat') || cells[add].classList.contains('siren')) {
@@ -297,6 +290,13 @@ document.addEventListener('DOMContentLoaded', () => {
       //add 3 health
       health.push(1)
       ui[2].textContent = `${health}`
+      let newMsg = document.createElement('p')
+      let msg = document.createTextNode(`You gained 3 Health`)
+      newMsg.appendChild(msg)
+      inventory.appendChild(newMsg)
+      setTimeout(function () {
+        inventory.removeChild(newMsg)
+      }, 5000)
     }
     function kegPowder () {
       //make next attack hit adjacent tiles
@@ -305,6 +305,13 @@ document.addEventListener('DOMContentLoaded', () => {
       //reveal whats under the cursor for 15 seconds
     }
     function extraAmmo () {
+      let newMsg = document.createElement('p')
+      let msg = document.createTextNode(`You 4x extra cannonballs!`)
+      newMsg.appendChild(msg)
+      inventory.appendChild(newMsg)
+      setTimeout(function () {
+        inventory.removeChild(newMsg)
+      }, 5000)
       for (let i = 0; i < 4; i++){
         const balls = document.createElement('div')
         cannon.appendChild(balls)
@@ -321,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log(' ')
       console.log('you rolled a ' + roll)
       if (roll === 1 || roll === 3 || roll === 9) {
+        
         console.log('you found extra life!')
         extraHealth()
       } else if (roll === 5 || roll === 7) {
@@ -398,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (cells[playerIdx].classList.contains('loot')) {
         console.log('you found loot')
         let newMsg = document.createElement('p')
-        let msg = document.createTextNode(`You found loot!`)
+        let msg = document.createTextNode(`You found 5 Dubloons!`)
         newMsg.appendChild(msg)
         inventory.appendChild(newMsg)
         setTimeout(function () {
