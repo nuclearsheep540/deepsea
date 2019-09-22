@@ -206,6 +206,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // **** OBJECT GENERATION **** //
+    //GENERATE HORIZONTAL BOATS
+    let boatH = []
+    function makeBoatH() {
+      boatH.length = 1
+      boatH[0] = (randomiseOne(219))
+      if (boatH[0] === (width % width < 2)){
+        boatH[0].shift()
+        boatH[0].push(randomiseOne(219)) 
+        console.log(boatH) 
+      } else {
+        boatH.push(boatH[0] + 1)
+        boatH.push(boatH[0] + 2)
+        console.log(boatH)
+      }
+    }makeBoatH()
+    boatH.forEach((e, index, arr) => {
+      cells[e].classList.add('boat')
+    })
+
+
     //GENERATE TRAPS
     let trap = []
     function makeTrap() {
@@ -220,7 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } makeTrap()
     trap.forEach((e, index, arr) => {
       cells[e].classList.add('trap')
-    
       console.log('traps ' + trap)
     })
 
@@ -238,7 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } makeLoot()
     loot.forEach((e, index, arr) => {
       cells[e].classList.add('loot')
-     
       console.log('loot ' + loot)
     })
 
@@ -256,7 +274,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } makeSirens()
     sirens.forEach((e, index, arr) => {
       cells[e].classList.add('siren')
-      
       console.log('sirens ' + sirens)
     })
 
@@ -352,9 +369,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     })
-
-    //END OF ATTACK
-   
   })
-
 })
