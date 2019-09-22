@@ -209,11 +209,14 @@ document.addEventListener('DOMContentLoaded', () => {
     //GENERATE HORIZONTAL BOATS
     let boatH = []
     function makeBoatH() {
+      const x = playerIdx % width
       boatH.length = 1
       boatH[0] = (randomiseOne(219))
-      if (boatH[0] === (width % width < 2)){
-        boatH[0].shift()
-        boatH[0].push(randomiseOne(219)) 
+      if (boatH[0] !== (x < width - 4)){
+        boatH.shift()
+        boatH.push(randomiseOne(219)) 
+        boatH.push(boatH[0] + 1)
+        boatH.push(boatH[0] + 2)
         console.log(boatH) 
       } else {
         boatH.push(boatH[0] + 1)
