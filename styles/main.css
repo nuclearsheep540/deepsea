@@ -88,7 +88,7 @@ span {
 
   border: 2px solid brown;
   border-radius: 4px;
-  background-color: rgba(165, 42, 42, 0.8);
+  background-color: rgba(165, 42, 42, 0.2);
 }
 .stage-container {
   display: flex;
@@ -175,16 +175,16 @@ margin: auto;
 /* OBJECTS */
 /*  */
 .loot{
-  /* background-color: gold; */
+  background-color: gold;
   }
   .boat{
   background-color: rgb(116, 61, 13)
   }
   .trap{
-  /* background-color: blueviolet */
+  background-color: blueviolet
   }
   .siren{
-    /* background-color: palevioletred */
+    background-color: palevioletred
   }
   .balls {
     background: black;

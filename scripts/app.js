@@ -196,48 +196,76 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       return
     }//END OF GAME BOARD GEN
-  
-     //  COMPUTER GENERATED OBJECTS
-     function randomiseOne(max) {
-      return Math.floor(Math.random() * Math.floor(max))
-    }
-    function retry() {
-      // re call randomise on the const until condition is met
-    }
+
 
     // **** OBJECT GENERATION **** //
+
+
+
+
+
+    //  COMPUTER GENERATED OBJECTS
+    function randomiseOne(max) {
+      return Math.floor(Math.random() * Math.floor(max))
+    }
+
     //GENERATE HORIZONTAL BOATS
     let boatH = []
     function makeBoatH() {
-      const x = playerIdx % width
       boatH.length = 1
       boatH[0] = (randomiseOne(219))
-      if (boatH[0] !== (x < width - 4)){
+      const x = boatH[0] % width
+      if (boatH[0] === (x < width +4)) {
         boatH.shift()
-        boatH.push(randomiseOne(219)) 
+        boatH.push(randomiseOne(219))
         boatH.push(boatH[0] + 1)
         boatH.push(boatH[0] + 2)
-        console.log(boatH) 
+        console.log(boatH)
       } else {
         boatH.push(boatH[0] + 1)
         boatH.push(boatH[0] + 2)
         console.log(boatH)
       }
-    }makeBoatH()
-    boatH.forEach((e, index, arr) => {
-      cells[e].classList.add('boat')
-    })
-
+    } 
+    for (let i = 0; i < 2; i++){
+      makeBoatH()
+      boatH.forEach((e, index, arr) => {
+        cells[e].classList.add('boat')
+      })
+    }
+    let boatV = []
+    function makeBoatV() {
+      boatV.length = 1
+      boatV[0] = (randomiseOne(179))
+      const y = Math.floor(boatV[0] / width)
+      if (boatV[0] === (y > 7)) {
+        boatV.shift()
+        boatV.push(randomiseOne(219))
+        boatV.push(boatV[0] + 20)
+        boatV.push(boatV[0] + 40)
+        console.log(boatV)
+      } else {
+        boatV.push(boatV[0] + 20)
+        boatV.push(boatV[0] + 40)
+        console.log(boatV)
+      }
+    }  
+    for (let i = 0; i < 2; i++){
+      makeBoatV()
+      boatV.forEach((e, index, arr) => {
+        cells[e].classList.add('boat')
+      })
+    }
 
     //GENERATE TRAPS
     let trap = []
     function makeTrap() {
-      for (let i = 0; i < 7; i++) {
+      for (let i = 0; i < 10; i++) {
         let add = (randomiseOne(219))
         trap.push(add)
-        if (trap.contains === trap.some) {
-          this.pop()
-          this.push(randomiseOne(219))
+        if (cells[add].classList.contains('boat') || cells[add].classList.contains('loot') ) {
+          trap.pop()
+          trap.push(randomiseOne(219))
         }
       }
     } makeTrap()
@@ -249,13 +277,13 @@ document.addEventListener('DOMContentLoaded', () => {
     //GENERATE LOOT
     let loot = []
     function makeLoot() {
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 10; i++) {
         let add = (randomiseOne(219))
         loot.push(add)
-        if (loot.contains === trap.some || loot.contains === loot.some) {
-          this.pop()
-          this.push(randomiseOne(219))
-        }
+        if (cells[add].classList.contains('boat') || cells[add].classList.contains('siren') ) {
+          loot.pop()
+          loot.push(randomiseOne(219))
+        } 
       }
     } makeLoot()
     loot.forEach((e, index, arr) => {
@@ -266,12 +294,12 @@ document.addEventListener('DOMContentLoaded', () => {
     //GENERATE SIRENS
     let sirens = []
     function makeSirens() {
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 10; i++) {
         let add = randomiseOne(219)
         sirens.push(add)
-        if (sirens.contains === loot.some || sirens.contains === trap.some || sirens.contains === sirens.some) {
-          this.pop()
-          this.push(randomiseOne(219))
+        if (cells[add].classList.contains('boat') || cells[add].classList.contains('loot')) {
+          sirens.pop()
+          sirens.push(randomiseOne(219))
         }
       }
     } makeSirens()
@@ -279,6 +307,10 @@ document.addEventListener('DOMContentLoaded', () => {
       cells[e].classList.add('siren')
       console.log('sirens ' + sirens)
     })
+
+
+
+
 
     //START PLAYER @ playerIdx
     cells[playerIdx].classList.add('player')
@@ -324,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('you found loot')
         cells[playerIdx].classList.remove('loot')
         cells[playerIdx].classList.add('hit')
-        return score += 15
+        return score += 10
       } else if (cells[playerIdx].classList.contains('boat')) {
         console.log('you hit a boat')
         cells[playerIdx].classList.remove('boat')
