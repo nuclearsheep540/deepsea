@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const stage2 = document.querySelector('.stage2')
   const stage3 = document.querySelector('.stage3')
   const cannon = document.querySelector('.cannon')
+  const counter = document.querySelector('.counter')
+  const balls = document.createElement('div')
   const cannonballs = []
   const backButton = document.querySelector('button.left')
   const nextButton = document.querySelector('.right')
@@ -75,13 +77,16 @@ document.addEventListener('DOMContentLoaded', () => {
         cannon.appendChild(balls) //the html object storing the array
         cannonballs.push(balls) //the array pushing the objects
         cannonballs.forEach((item) => {
+          counter.innerHTML = `canonballs x ${cannonballs.length}`
           return item.classList.add('balls')
+          
         })
-      }, 125)
+      }, 50)
       setTimeout(() => {
         clearInterval(timerId)
         return
-      }, 2500)
+      }, 1500)
+      
       //CANONBALLS READY
     }, 1500)
   }// end of setTimeout Function
@@ -93,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // back button
   backButton.addEventListener('click', e => {
     grid.innerHTML = ''
-    cannon.innerHTML = '<p>Cannonballs</p>'
+    cannon.innerHTML = ''
     gamestate = false
     console.log('gamestate ' + gamestate)
 
@@ -200,10 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // **** OBJECT GENERATION **** //
 
-
-
-
-
     //  COMPUTER GENERATED OBJECTS
     function randomiseOne(max) {
       return Math.floor(Math.random() * Math.floor(max))
@@ -213,9 +214,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let boatH = []
     function makeBoatH() {
       boatH.length = 1
-      boatH[0] = (randomiseOne(219))
+      boatH[0] = (randomiseOne(214))
       const x = boatH[0] % width
-      if (boatH[0] === (x < width +4)) {
+      if (boatH[0] === (x < width + 4)) {
         boatH.shift()
         boatH.push(randomiseOne(219))
         boatH.push(boatH[0] + 1)
@@ -226,13 +227,14 @@ document.addEventListener('DOMContentLoaded', () => {
         boatH.push(boatH[0] + 2)
         console.log(boatH)
       }
-    } 
-    for (let i = 0; i < 2; i++){
+    }
+    for (let i = 0; i < 2; i++) {
       makeBoatH()
       boatH.forEach((e, index, arr) => {
         cells[e].classList.add('boat')
       })
     }
+    // GENERATE VERTICAL BOATS
     let boatV = []
     function makeBoatV() {
       boatV.length = 1
@@ -249,8 +251,8 @@ document.addEventListener('DOMContentLoaded', () => {
         boatV.push(boatV[0] + 40)
         console.log(boatV)
       }
-    }  
-    for (let i = 0; i < 2; i++){
+    }
+    for (let i = 0; i < 2; i++) {
       makeBoatV()
       boatV.forEach((e, index, arr) => {
         cells[e].classList.add('boat')
@@ -263,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
       for (let i = 0; i < 10; i++) {
         let add = (randomiseOne(219))
         trap.push(add)
-        if (cells[add].classList.contains('boat') || cells[add].classList.contains('loot') ) {
+        if (cells[add].classList.contains('boat') || cells[add].classList.contains('loot')) {
           trap.pop()
           trap.push(randomiseOne(219))
         }
@@ -280,16 +282,57 @@ document.addEventListener('DOMContentLoaded', () => {
       for (let i = 0; i < 10; i++) {
         let add = (randomiseOne(219))
         loot.push(add)
-        if (cells[add].classList.contains('boat') || cells[add].classList.contains('siren') ) {
+        if (cells[add].classList.contains('boat') || cells[add].classList.contains('siren')) {
           loot.pop()
           loot.push(randomiseOne(219))
-        } 
+        }
       }
     } makeLoot()
     loot.forEach((e, index, arr) => {
       cells[e].classList.add('loot')
       console.log('loot ' + loot)
     })
+    //CHANCE FOR SWEET ITEMS
+    function extraHealth () {
+      //add 3 health
+      health.push(1)
+      ui[2].textContent = `${health}`
+    }
+    function kegPowder () {
+      //make next attack hit adjacent tiles
+    }
+    function spyGlass () {
+      //reveal whats under the cursor for 15 seconds
+    }
+    function extraAmmo () {
+      for (let i = 0; i < 4; i++){
+        const balls = document.createElement('div')
+        cannon.appendChild(balls)
+        cannonballs.push(balls)
+        cannonballs.forEach((item) => {
+          counter.innerHTML = `canonballs x ${cannonballs.length}`
+          return item.classList.add('balls')
+        })
+      }
+    }
+
+    function itemRoll() {
+      const roll = Math.ceil(Math.random()*12)
+      console.log(' ')
+      console.log('you rolled a ' + roll)
+      if (roll === 1 || roll === 3 || roll === 9) {
+        console.log('you found extra life!')
+        extraHealth()
+      } else if (roll === 5 || roll === 7) {
+        console.log('youve found a Keg o Powder')
+      } else if (roll === 11) {
+        console.log('you found a spyglass!')
+      } else if (roll %2 === 0) {
+        console.log('you found more cannonballs!')
+        extraAmmo()
+
+      }
+    } 
 
     //GENERATE SIRENS
     let sirens = []
@@ -309,11 +352,8 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
 
-
-
-
     //START PLAYER @ playerIdx
-    cells[playerIdx].classList.add('player')
+    // cells[playerIdx].classList.add('player')
 
     // **** KEY EVENTS **** //
     //KEY DOWN LISTENER >> MOVE PLAYER
@@ -347,39 +387,84 @@ document.addEventListener('DOMContentLoaded', () => {
     })//END OF KEY DOWN LISTENER
 
     // ATTACK!
+
+
     function attack() {
       //if the cell player is on has loot boats or trap, mark a hit and check for loot
       if (cells[playerIdx].classList.contains('loot', 'boat', 'trap')) {
         console.log('landed a hit..')
+        
       } //if loot is the following, perform the loot check
       if (cells[playerIdx].classList.contains('loot')) {
         console.log('you found loot')
+        let newMsg = document.createElement('p')
+        let msg = document.createTextNode(`You found loot!`)
+        newMsg.appendChild(msg)
+        inventory.appendChild(newMsg)
+        setTimeout(function () {
+          inventory.removeChild(newMsg)
+        }, 5000)
         cells[playerIdx].classList.remove('loot')
-        cells[playerIdx].classList.add('hit')
+        // cells[playerIdx].classList.add('hit')
+        cells[playerIdx].classList.add('lootHit')
+        
         return score += 10
       } else if (cells[playerIdx].classList.contains('boat')) {
         console.log('you hit a boat')
+        let newMsg = document.createElement('p')
+        let msg = document.createTextNode(`You hit a boat!`)
+        newMsg.appendChild(msg)
+        inventory.appendChild(newMsg)
+        setTimeout(function () {
+          inventory.removeChild(newMsg)
+        }, 5000)
         cells[playerIdx].classList.remove('boat')
-        cells[playerIdx].classList.add('hit')
-        return score += 5
+        // cells[playerIdx].classList.add('hit')
+        cells[playerIdx].classList.add('boatHit')
+        itemRoll()
+
       } else if (cells[playerIdx].classList.contains('trap')) {
         console.log('you hit trap and lost a life')
+        let newMsg = document.createElement('p')
+        let msg = document.createTextNode(`You just lost a life!`)
+        newMsg.appendChild(msg)
+        inventory.appendChild(newMsg)
+        setTimeout(function () {
+          inventory.removeChild(newMsg)
+        }, 5000)
         cells[playerIdx].classList.remove('trap')
-        cells[playerIdx].classList.add('hit')
+        // cells[playerIdx].classList.add('hit')
+        cells[playerIdx].classList.add('trapHit')
         health.pop()
         console.log(health + 'health')
         return ui[2].textContent = `${health}`
       } else if (cells[playerIdx].classList.contains('siren')) {
         console.log('you hit a siren... she steals 5 Doubloons')
+        let newMsg = document.createElement('p')
+        let msg = document.createTextNode(`You hit a siren! \rLose 5 Dubloons`)
+        newMsg.appendChild(msg)
+        inventory.appendChild(newMsg)
+        setTimeout(function () {
+          inventory.removeChild(newMsg)
+        }, 5000)
         cells[playerIdx].classList.remove('siren')
-        cells[playerIdx].classList.add('hit')
+        // cells[playerIdx].classList.add('hit')
+        cells[playerIdx].classList.add('sirenHit')
         return score -= 5
       } else {
         console.log('you missed')
+        let newMsg = document.createElement('p')
+        let msg = document.createTextNode(`You didnt hit anything...`)
+        newMsg.appendChild(msg)
+        inventory.appendChild(newMsg)
+        setTimeout(function () {
+          inventory.removeChild(newMsg)
+        }, 5000)
         cells[playerIdx].classList.add('miss')
         cells[playerIdx].classList.add('hit')
       }
     }
+
     function attackCheck() {
       //if the cell, the player is on has not been attacked and there are cannonballs
       if (cells[playerIdx].classList.contains('attack') === false && cannon.childNodes.length > 1 && health.length > 0) {
@@ -388,6 +473,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(playerIdx)
         console.log('attack!..')
         attack()
+        counter.innerHTML = `canonballs x ${cannon.childElementCount -1}`
         return cells[playerIdx].classList.add('attack')
       } else {
         console.log('unable to attack, check attack conditions')
