@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   readyState()
-  
+
 
 
   // ^^^^^ declare variables above ^^^^^
@@ -205,39 +205,65 @@ document.addEventListener('DOMContentLoaded', () => {
     function randomiseOne(max) {
       return Math.floor(Math.random() * Math.floor(max))
     }
-    function retry () {
+    function retry() {
       // re call randomise on the const until condition is met
     }
-    const loot1 = (randomiseOne(219))
-    const loot2 = (randomiseOne(219))
-    const loot3 = (randomiseOne(219))
-    const loot4 = (randomiseOne(219))
-    const makeLoot = [cells[loot1], cells[loot2], cells[loot3], cells[loot4]]
-    makeLoot.forEach((e, index) => {
-      console.log('loot ' + loot1,loot2,loot3,loot4)
-      e.classList.add('loot')
+
+    //GENERATE TRAPS
+    let trap = []
+    function makeTrap() {
+      for (let i = 0; i < 7; i++) {
+        let add = (randomiseOne(219))
+        trap.push(add)
+        if (trap.contains === trap.some) {
+          this.pop()
+          this.push(randomiseOne(219))
+        }
+      }
+    } makeTrap()
+    
+    trap.forEach((e, index, arr) => {
+      cells[e].classList.add('trap')
+      cells[e].style.visibility = 'hidden'
+      console.log('traps ' + trap)
     })
 
-    const trap1 = (randomiseOne(219))
-    const trap2 = (randomiseOne(219))
-    const trap3 = (randomiseOne(219))
-    const trap4 = (randomiseOne(219))
-    const trap5 = (randomiseOne(219))
-    const makeTrap = [cells[trap1], cells[trap2], cells[trap3], cells[trap4], cells[trap5]]
-    makeTrap.forEach((e, index) => {
-      console.log('traps ' + trap1,trap2,trap3,trap4,trap5)
-      e.classList.add('trap')
+    //GENERATE LOOT
+    let loot = []
+    function makeLoot() {
+      for (let i = 0; i < 5; i++) {
+        let add = (randomiseOne(219))
+        loot.push(add)
+        if (loot.contains === trap.some || loot.contains === loot.some) {
+          this.pop()
+          this.push(randomiseOne(219))
+        }
+      }
+    } makeLoot()
+    loot.forEach((e, index, arr) => {
+      cells[e].classList.add('loot')
+      cells[e].style.visibility = 'hidden'
+      console.log('loot ' + loot)
     })
 
-    const siren1 = (randomiseOne(219))
-    const siren2 = (randomiseOne(219))
-    const siren3 = (randomiseOne(219))
-    const makeSiren = [cells[trap1], cells[trap2], cells[trap3]]
-    makeSiren.forEach((e, index) => {
-      console.log('sirens ' + siren1,siren2,siren3)
-      e.classList.add('siren')
+    //GENERATE SIRENS
+    let sirens = []
+    function makeSirens() {
+      for (let i = 0; i < 4; i++){
+        let add = randomiseOne(219)
+        sirens.push(add)
+        if (sirens.contains === loot.some || sirens.contains === trap.some || sirens.contains === sirens.some) {
+          this.pop()
+          this.push(randomiseOne(219))
+        }
+      }
+    } makeSirens()
+    sirens.forEach((e, index, arr) => {
+      cells[e].classList.add('siren')
+      cells[e].style.visibility = 'hidden'
+      console.log('sirens ' +  sirens)
     })
-  
+    
 
 
     //hard code boats
@@ -343,13 +369,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return
       }
     }
-    
 
-    
+
+
     document.addEventListener('keydown', (e) => {
       if (e.keyCode === 32) {
         attackCheck()
-        if (health.length === 0){
+        if (health.length === 0) {
           console.log('you lose!')
           alert('Avast ye swab! Ye dun out of ships! Better luck next time, eh?')
         }
