@@ -77,11 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
         cannonballs.forEach((item) => {
           return item.classList.add('balls')
         })
-      }, 150)
+      }, 125)
       setTimeout(() => {
         clearInterval(timerId)
         return
-      }, 1500)
+      }, 2500)
       //CANONBALLS READY
     }, 1500)
   }// end of setTimeout Function
@@ -164,10 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
   ui[2].textContent = `${health}`
 
 
-
-
-
-
   const play = document.querySelector('#play')
   //SHOW WHERE THE PLAYER IS BY UPDATING CLASS
   function handleClick(e) {
@@ -179,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
   play.addEventListener('click', () => {
     console.log('game script enabled')
 
-    //RULES OF THE GRID
+    //**** RULES OF THE GRID **** //
 
     const width = 20
     const cells = []
@@ -200,15 +196,16 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       return
     }//END OF GAME BOARD GEN
-
-    //  COMPUTER GENERATED OBJECTS
-    function randomiseOne(max) {
+  
+     //  COMPUTER GENERATED OBJECTS
+     function randomiseOne(max) {
       return Math.floor(Math.random() * Math.floor(max))
     }
     function retry() {
       // re call randomise on the const until condition is met
     }
 
+    // **** OBJECT GENERATION **** //
     //GENERATE TRAPS
     let trap = []
     function makeTrap() {
@@ -221,10 +218,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     } makeTrap()
-    
     trap.forEach((e, index, arr) => {
       cells[e].classList.add('trap')
-      cells[e].style.visibility = 'hidden'
+    
       console.log('traps ' + trap)
     })
 
@@ -242,14 +238,14 @@ document.addEventListener('DOMContentLoaded', () => {
     } makeLoot()
     loot.forEach((e, index, arr) => {
       cells[e].classList.add('loot')
-      cells[e].style.visibility = 'hidden'
+     
       console.log('loot ' + loot)
     })
 
     //GENERATE SIRENS
     let sirens = []
     function makeSirens() {
-      for (let i = 0; i < 4; i++){
+      for (let i = 0; i < 4; i++) {
         let add = randomiseOne(219)
         sirens.push(add)
         if (sirens.contains === loot.some || sirens.contains === trap.some || sirens.contains === sirens.some) {
@@ -260,37 +256,14 @@ document.addEventListener('DOMContentLoaded', () => {
     } makeSirens()
     sirens.forEach((e, index, arr) => {
       cells[e].classList.add('siren')
-      cells[e].style.visibility = 'hidden'
-      console.log('sirens ' +  sirens)
+      
+      console.log('sirens ' + sirens)
     })
-    
-
-
-    //hard code boats
-    // const boats = cells.slice(4, 7)
-    // boats.forEach((e) => {
-    //   e.classList.add('boat')
-    // })
-    // //hard code loot
-    // const loot = [cells[1], cells[55], cells[32]]
-    // loot.forEach((e) => {
-    //   e.classList.add('loot')
-    // })
-    // //hard code traps
-    // const trap = [cells[10], cells[110], cells[132]]
-    // trap.forEach((e) => {
-    //   e.classList.add('trap')
-    // })
-    // //hard code siren
-    // const siren = [cells[102], cells[77]]
-    // siren.forEach((e) => {
-    //   e.classList.add('siren')
-    // })
 
     //START PLAYER @ playerIdx
     cells[playerIdx].classList.add('player')
 
-
+    // **** KEY EVENTS **** //
     //KEY DOWN LISTENER >> MOVE PLAYER
     document.addEventListener('keydown', (e) => {
       cells[playerIdx].classList.remove('player')
@@ -370,8 +343,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-
-
     document.addEventListener('keydown', (e) => {
       if (e.keyCode === 32) {
         attackCheck()
@@ -383,5 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     //END OF ATTACK
+   
   })
+
 })

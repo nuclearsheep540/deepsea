@@ -172,9 +172,38 @@ margin: auto;
 /*  */
 
 /*  */
+/* OBJECTS */
+/*  */
+.loot{
+  /* background-color: gold; */
+  }
+  .boat{
+  background-color: rgb(116, 61, 13)
+  }
+  .trap{
+  /* background-color: blueviolet */
+  }
+  .siren{
+    /* background-color: palevioletred */
+  }
+  .balls {
+    background: black;
+    margin: auto 10px;
+    border: 3px solid brown;
+    border-radius: 25px;
+    min-width: 25px;
+    max-width: 25px;
+    min-height: 25px;
+    max-height: 25px;
+  }
+
+/*  */
 /* PLAYER BASED STYLING */
 /*  */
 
+.player {
+  background-color: rgba(255, 0, 0, 0.5);
+}
 .attack {
   background-color: rgba(255, 255, 255, 0.1)
 }
@@ -184,36 +213,10 @@ margin: auto;
 .miss {
   background-color: rgba(0, 0, 0, 0.5);
 }
-.player {
-  background-color: rgba(255, 0, 0, 0.5);
-}
 
 
-/*  */
-/* OBJECTS */
-/*  */
-.loot{
-background-color: gold;
-}
-.boat{
-background-color: rgb(116, 61, 13)
-}
-.trap{
-background-color: blueviolet
-}
-.siren{
-  background-color: palevioletred
-}
-.balls {
-  background: black;
-  margin: auto 10px;
-  border: 3px solid brown;
-  border-radius: 25px;
-  min-width: 25px;
-  max-width: 25px;
-  min-height: 25px;
-  max-height: 25px;
-}
+
+
 
 /*  */
 /* END OF PLAYER BASED STYLING */
