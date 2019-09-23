@@ -19,10 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const grid = document.querySelector('.grid')
   const ambi = new Audio('seasong.mp3')
   const bgm = new Audio('bgm.mp3')
+  bgm.volume = 0.4;
   let gamestate = false
   const width = 20
   let cells = []
-  let playerIdx = 81
+  let playerIdx = 110
   let keyLoaded = true
   readyState()
 
@@ -39,6 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
       document.addEventListener('keydown', (e) => {
         if (e.keyCode === 32 && gamestate === false) {
           console.log('booting up...')
+          backButton.classList.remove('stealth')
+          nextButton.classList.remove('stealth')
+          const ui = document.querySelector('.ui-container')
+          ui.classList.remove('stealth')
           ready.classList.add('hide')
           stage0.classList.remove('hide')
           ambi.play()
@@ -64,13 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function GameQuickPlay() {
     keyPress()
-    
     setTimeout(function () {
       stage0.classList.add('hide')
     }, 1000)
     setTimeout(function () {
       stage2.classList.remove('hide')
       cannon.classList.remove('hide')
+      shop.classList.remove('hide')
       inventory.classList.remove('hide')
       // shop.classList.remove('hide')
       console.log('gamestart complete')
@@ -155,8 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })//end of event listener
   )//end of modebutton
 
-
-
   // **************************************//
   // ************ GAME LOGIC **************//
   // **************************************//
@@ -169,7 +172,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   })
   let health = [1, 1, 1]
+  health.fill('⚓️')
   ui[2].textContent = `${health}`
+  
 
 
   const play = document.querySelector('#play')
@@ -182,11 +187,9 @@ document.addEventListener('DOMContentLoaded', () => {
   //BEFORE RECORDING MOVES AND ATTACKS
   play.addEventListener('click', () => {
     console.log('game script enabled')
+    console.log('gamestate = ' + gamestate)
 
     //**** RULES OF THE GRID **** //
-
-
-    console.log('gamestate ' + gamestate)
 
     //GAME BOARD GEN >> GENERATE 20 x 11 GAMEBOARD
     if (gamestate === false) {
@@ -222,17 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('inside', boatH[0] % width)
       }
     }
-    // function check() {
-    //   console.log('this checked')
-    //   boatH = []
-    //   boatH[0] = randomiseOne(216)
-    //   x = boatH[0] % width
-    // }
-    // console.log(x)
-    // while (x > 17) {
-    //   console.log(x)
-    //   check()
-    // }
+
     for (let i = 0; i < 4; i++) {
       check()
       makeBoatH()
@@ -343,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
         checkLoot() //run check
       }
     }
-    for (let i = 0; loot.length < 12; i++) {
+    for (let i = 0; loot.length < 16; i++) {
       // while there is less than 20 loot, make loot
       makeLoot()
     }
@@ -356,6 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function extraHealth() {
       //add 3 health
       health.push(1)
+      health.fill('⚓️')
       ui[2].textContent = `${health}`
       let newMsg = document.createElement('p')
       let msg = document.createTextNode(`You gained 1 Health`)
@@ -373,13 +367,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function extraAmmo() {
       let newMsg = document.createElement('p')
-      let msg = document.createTextNode(`You 4x extra cannonballs!`)
+      let msg = document.createTextNode(`You found 4x cannonballs!`)
       newMsg.appendChild(msg)
       inventory.appendChild(newMsg)
       setTimeout(function () {
         inventory.removeChild(newMsg)
       }, 5000)
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 5; i++) {
         const balls = document.createElement('div')
         cannon.appendChild(balls)
         cannonballs.push(balls)
@@ -407,15 +401,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-
     //START PLAYER @ playerIdx
-    // cells[playerIdx].classList.add('player')
+    cells[playerIdx].classList.add('player')
 
     // **** KEY EVENTS **** //
     //KEY DOWN LISTENER >> MOVE PLAYER
     
-
-
     // ATTACK!
 
     function attack() {
@@ -466,6 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cells[playerIdx].classList.add('trapHit')
         health.pop()
         console.log(health + 'health')
+        health.fill('⚓️')
         return ui[2].textContent = `${health}`
       } else if (cells[playerIdx].classList.contains('siren')) {
         console.log('you hit a siren... she steals 5 Doubloons')
