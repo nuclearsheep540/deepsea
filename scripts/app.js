@@ -13,15 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const cannon = document.querySelector('.cannon')
   const counter = document.querySelector('.counter')
   const balls = document.createElement('div')
-  const cannonballs = []
+  let cannonballs = []
   const backButton = document.querySelector('button.left')
   const nextButton = document.querySelector('.right')
   const grid = document.querySelector('.grid')
   const ambi = new Audio('seasong.mp3')
   const bgm = new Audio('bgm.mp3')
   let gamestate = false
-
-
+  const width = 20
+  let cells = []
+  let playerIdx = 81
+  let keyLoaded = true
   readyState()
 
   // ^^^^^ declare variables above ^^^^^
@@ -49,18 +51,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }//end of readyState
 
   function GameStartTutorial() {
+    gamestate = true
     setTimeout(function () {
       stage0.classList.add('hide')
     }, 1000)
     setTimeout(function () {
       stage1.classList.remove('hide')
-      cannon.classList.remove('hide')
       console.log('gamestart complete')
       console.log('gamestate ' + gamestate)
     }, 1500)
   }// end of GameStartTutorial
 
   function GameQuickPlay() {
+    keyPress()
+    
     setTimeout(function () {
       stage0.classList.add('hide')
     }, 1000)
@@ -68,25 +72,26 @@ document.addEventListener('DOMContentLoaded', () => {
       stage2.classList.remove('hide')
       cannon.classList.remove('hide')
       inventory.classList.remove('hide')
-      shop.classList.remove('hide')
+      // shop.classList.remove('hide')
       console.log('gamestart complete')
       console.log('gamestate ' + gamestate)
+      cannon.appendChild(counter)
+      counter.classList.add('counter')
       //LOAD THE CANNONBALLS
       const timerId = setInterval(() => {
+
         const balls = document.createElement('div') //the object
         cannon.appendChild(balls) //the html object storing the array
         cannonballs.push(balls) //the array pushing the objects
         cannonballs.forEach((item) => {
           counter.innerHTML = `canonballs x ${cannonballs.length}`
-          return item.classList.add('balls')
-          
+          item.classList.add('balls')
         })
       }, 50)
       setTimeout(() => {
         clearInterval(timerId)
         return
       }, 1500)
-      
       //CANONBALLS READY
     }, 1500)
   }// end of setTimeout Function
@@ -96,17 +101,22 @@ document.addEventListener('DOMContentLoaded', () => {
   // **************************************//
 
   // back button
-  backButton.addEventListener('click', e => {
+  backButton.addEventListener('click', (e) => {
+    console.log('clicked')
+    
+
+    cells = []
     grid.innerHTML = ''
     cannon.innerHTML = ''
+    cannonballs = []
     gamestate = false
     console.log('gamestate ' + gamestate)
-
     setTimeout(function () {
       stage1.classList.add('hide')
       stage2.classList.add('hide')
       stage3.classList.add('hide')
       cannon.classList.add('hide')
+      shop.classList.add('hide')
       inventory.classList.add('hide')
     }, 1000)
     setTimeout(function () {
@@ -175,12 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //**** RULES OF THE GRID **** //
 
-    const width = 20
-    const cells = []
-    let playerIdx = 81
+
     console.log('gamestate ' + gamestate)
 
-    //GAME BOARD GEN >> GENERATE 9 x 18 GAMEBOARD
+    //GAME BOARD GEN >> GENERATE 20 x 11 GAMEBOARD
     if (gamestate === false) {
 
       for (let i = 0; i < width * 11; i++) {
@@ -193,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
       gamestate = true
     } else {
       return
-    }//END OF GAME BOARD GEN
+    }//**** END OF GRID GEN **** //
 
 
     // **** OBJECT GENERATION **** //
@@ -204,107 +212,166 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     //GENERATE HORIZONTAL BOATS
-    let boatH = []
-    function makeBoatH() {
-      boatH.length = 1
-      boatH[0] = (randomiseOne(214))
-      const x = boatH[0] % width
-      if (boatH[0] === (x < width + 4)) {
-        boatH.shift()
-        boatH.push(randomiseOne(219))
-        boatH.push(boatH[0] + 1)
-        boatH.push(boatH[0] + 2)
-        console.log(boatH)
-      } else {
-        boatH.push(boatH[0] + 1)
-        boatH.push(boatH[0] + 2)
-        console.log(boatH)
+    const boatH = []
+
+    function check() {
+      boatH[0] = randomiseOne(216)
+      console.log('outside the while', boatH[0] % width)
+      while ((boatH[0] % width) > width - 3) {
+        boatH[0] = randomiseOne(216)
+        console.log('inside', boatH[0] % width)
       }
     }
-    for (let i = 0; i < 2; i++) {
+    // function check() {
+    //   console.log('this checked')
+    //   boatH = []
+    //   boatH[0] = randomiseOne(216)
+    //   x = boatH[0] % width
+    // }
+    // console.log(x)
+    // while (x > 17) {
+    //   console.log(x)
+    //   check()
+    // }
+    for (let i = 0; i < 4; i++) {
+      check()
       makeBoatH()
+    }
+
+    function makeBoatH() {
+      boatH.push(boatH[0] + 1)
+      boatH.push(boatH[0] + 2)
+      console.log('boat h = ' + boatH)
       boatH.forEach((e, index, arr) => {
         cells[e].classList.add('boat')
       })
-    }
+    } //END OF GENERATE HORIZONTAL BOAT
+
     // GENERATE VERTICAL BOATS
-    let boatV = []
+    const boatV = []
     function makeBoatV() {
       boatV.length = 1
       boatV[0] = (randomiseOne(179))
-      const y = Math.floor(boatV[0] / width)
-      if (boatV[0] === (y > 7)) {
-        boatV.shift()
-        boatV.push(randomiseOne(219))
-        boatV.push(boatV[0] + 20)
-        boatV.push(boatV[0] + 40)
-        console.log(boatV)
-      } else {
-        boatV.push(boatV[0] + 20)
-        boatV.push(boatV[0] + 40)
-        console.log(boatV)
-      }
+      boatV.push(boatV[0] + 20)
+      boatV.push(boatV[0] + 40)
+      console.log(boatV)
     }
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
       makeBoatV()
       boatV.forEach((e, index, arr) => {
         cells[e].classList.add('boat')
       })
     }
+    // GENERATE SIRENS
+    // CREATE PLACEMENT CHECK
+    let sirens = []
+    function checkSirens() {
+      sirens.pop()
+      console.log('removing bad siren')
+      makeSirens()
+      console.log('calling sirens again')
+    }
+    function makeSirens() {
+      console.log('attempting to make a siren')
+      let add = randomiseOne(219)
 
-    //GENERATE TRAPS
-    let trap = []
-    function makeTrap() {
-      for (let i = 0; i < 12; i++) {
-        let add = (randomiseOne(219))
-        trap.push(add)
-        if (cells[add].classList.contains('boat') || cells[add].classList.contains('loot')) {
-          trap.pop()
-          trap.push(randomiseOne(219))
-        }
+      if (cells[add].classList.length < 1) {
+        console.log('found a tile')
+        sirens.push(add)
+        console.log('adding siren to ' + sirens)
+      } else {
+        console.log(add + ' was in use')
+        checkSirens()
       }
-    } makeTrap()
+    }
+    for (let i = 0; i < 6; i++) {
+      makeSirens()
+    }
+    sirens.forEach((e, index, arr) => {
+      cells[e].classList.add('siren')
+      console.log('sirens ' + sirens)
+    })
+
+    // GENERATE TRAPS
+    // CREATE PLACEMENT CHECK
+    const trap = []
+    function checkTrap() {
+      trap.pop()
+      console.log('removing bad trap from array')
+      makeTrap()
+      console.log('calling trap again')
+    }
+    function makeTrap() {
+      console.log('attempting to make trap')
+      let add = (randomiseOne(219))
+      if (cells[add].classList.length < 1) {
+        console.log('found a tile')
+        trap.push(add)
+        console.log('adding trap to ' + trap)
+      } else {
+        (trap + ' was in use, running check')
+        checkTrap()
+      }
+    }
+    for (let i = 0; trap.length < 12; i++) {
+      makeTrap()
+    }
     trap.forEach((e, index, arr) => {
       cells[e].classList.add('trap')
       console.log('traps ' + trap)
     })
 
-    //GENERATE LOOT
-    let loot = []
-    function makeLoot() {
-      for (let i = 0; i < 20; i++) {
-        let add = (randomiseOne(219))
-        loot.push(add)
-        if (cells[add].classList.contains('boat') || cells[add].classList.contains('siren')) {
-          loot.pop()
-          loot.push(randomiseOne(219))
-        }
+    // GENERATE LOOT
+    // CREATE PLACEMENT CHECK
+
+    const loot = []
+    function checkLoot() { //remove loot and make again
+      loot.pop()
+      console.log('removing bad loot from array')
+      makeLoot()
+      console.log('calling loot again')
+    }
+    function makeLoot() { //make the loot
+      console.log('attempting to make loot')
+      const add = (randomiseOne(219)) //choose a tile
+      if (cells[add].classList.length < 1) { //if tile is available
+        console.log('found a tile')
+        loot.push(add) //add to loot
+        console.log('adding loot to ' + add)
+      } else {
+        console.log(add + ' was in use, running check')
+        checkLoot() //run check
       }
-    } makeLoot()
-    loot.forEach((e, index, arr) => {
+    }
+    for (let i = 0; loot.length < 12; i++) {
+      // while there is less than 20 loot, make loot
+      makeLoot()
+    }
+    loot.forEach((e, ) => { //style every loot there is
       cells[e].classList.add('loot')
       console.log('loot ' + loot)
     })
+
     //CHANCE FOR SWEET ITEMS
-    function extraHealth () {
+    function extraHealth() {
       //add 3 health
       health.push(1)
       ui[2].textContent = `${health}`
       let newMsg = document.createElement('p')
-      let msg = document.createTextNode(`You gained 3 Health`)
+      let msg = document.createTextNode(`You gained 1 Health`)
       newMsg.appendChild(msg)
       inventory.appendChild(newMsg)
       setTimeout(function () {
         inventory.removeChild(newMsg)
       }, 5000)
     }
-    function kegPowder () {
+    function kegPowder() {
       //make next attack hit adjacent tiles
     }
-    function spyGlass () {
+    function spyGlass() {
       //reveal whats under the cursor for 15 seconds
     }
-    function extraAmmo () {
+    function extraAmmo() {
       let newMsg = document.createElement('p')
       let msg = document.createTextNode(`You 4x extra cannonballs!`)
       newMsg.appendChild(msg)
@@ -312,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(function () {
         inventory.removeChild(newMsg)
       }, 5000)
-      for (let i = 0; i < 4; i++){
+      for (let i = 0; i < 4; i++) {
         const balls = document.createElement('div')
         cannon.appendChild(balls)
         cannonballs.push(balls)
@@ -324,40 +391,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function itemRoll() {
-      const roll = Math.ceil(Math.random()*12)
+      const roll = Math.ceil(Math.random() * 12)
       console.log(' ')
       console.log('you rolled a ' + roll)
       if (roll === 1 || roll === 3 || roll === 9) {
-        
         console.log('you found extra life!')
         extraHealth()
       } else if (roll === 5 || roll === 7) {
         console.log('youve found a Keg o Powder')
       } else if (roll === 11) {
         console.log('you found a spyglass!')
-      } else if (roll %2 === 0) {
+      } else if (roll % 2 === 0) {
         console.log('you found more cannonballs!')
         extraAmmo()
-
       }
-    } 
-
-    //GENERATE SIRENS
-    let sirens = []
-    function makeSirens() {
-      for (let i = 0; i < 10; i++) {
-        let add = randomiseOne(219)
-        sirens.push(add)
-        if (cells[add].classList.contains('boat') || cells[add].classList.contains('loot')) {
-          sirens.pop()
-          sirens.push(randomiseOne(219))
-        }
-      }
-    } makeSirens()
-    sirens.forEach((e, index, arr) => {
-      cells[e].classList.add('siren')
-      console.log('sirens ' + sirens)
-    })
+    }
 
 
     //START PLAYER @ playerIdx
@@ -365,43 +413,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // **** KEY EVENTS **** //
     //KEY DOWN LISTENER >> MOVE PLAYER
-    document.addEventListener('keydown', (e) => {
-      cells[playerIdx].classList.remove('player')
-      const x = playerIdx % width
-      const y = Math.floor(playerIdx / width)
-      switch (e.keyCode) {
-        //left
-        case 37: if (x > 0) playerIdx -= 1
-          break
-        case 65: if (x > 0) playerIdx -= 1
-          break
-        // up  
-        case 38: if (y > 0) playerIdx -= width
-          break
-        case 87: if (y > 0) playerIdx -= width
-          break
-        // right
-        case 39: if (x < width - 1) playerIdx += 1
-          break
-        case 68: if (x < width - 1) playerIdx += 1
-          break
-        //down  
-        case 40: if (y < 10) playerIdx += width
-          break
-        case 83: if (y < 10) playerIdx += width
-          break
-      }
-      cells[playerIdx].classList.add('player')
-    })//END OF KEY DOWN LISTENER
+    
+
 
     // ATTACK!
-
 
     function attack() {
       //if the cell player is on has loot boats or trap, mark a hit and check for loot
       if (cells[playerIdx].classList.contains('loot', 'boat', 'trap')) {
         console.log('landed a hit..')
-        
+
       } //if loot is the following, perform the loot check
       if (cells[playerIdx].classList.contains('loot')) {
         console.log('you found loot')
@@ -415,7 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
         cells[playerIdx].classList.remove('loot')
         // cells[playerIdx].classList.add('hit')
         cells[playerIdx].classList.add('lootHit')
-        
+
         return score += 10
       } else if (cells[playerIdx].classList.contains('boat')) {
         console.log('you hit a boat')
@@ -481,14 +502,13 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(playerIdx)
         console.log('attack!..')
         attack()
-        counter.innerHTML = `canonballs x ${cannon.childElementCount -1}`
+        counter.innerHTML = `canonballs x ${cannon.childElementCount - 1}`
         return cells[playerIdx].classList.add('attack')
       } else {
         console.log('unable to attack, check attack conditions')
         return
       }
     }
-
     document.addEventListener('keydown', (e) => {
       if (e.keyCode === 32) {
         attackCheck()
@@ -499,4 +519,38 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
   })
+  function keyPress () {
+    if (keyLoaded === true) {
+      document.addEventListener('keydown', (e) => {
+        console.log('key pressed')
+        cells[playerIdx].classList.remove('player')
+        const x = playerIdx % width
+        const y = Math.floor(playerIdx / width)
+        switch (e.keyCode) {
+          //left
+          case 37: if (x > 0) playerIdx -= 1
+            break
+          case 65: if (x > 0) playerIdx -= 1
+            break
+          // up  
+          case 38: if (y > 0) playerIdx -= width
+            break
+          case 87: if (y > 0) playerIdx -= width
+            break
+          // right
+          case 39: if (x < width - 1) playerIdx += 1
+            break
+          case 68: if (x < width - 1) playerIdx += 1
+            break
+          //down  
+          case 40: if (y < 10) playerIdx += width
+            break
+          case 83: if (y < 10) playerIdx += width
+            break
+        }
+        cells[playerIdx].classList.add('player')
+        keyLoaded = false
+      })//END OF KEY DOWN LISTENER
+    }
+  }
 })
