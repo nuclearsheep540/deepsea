@@ -118,10 +118,7 @@ span {
     min-height: 500px;
     max-height: 500px;
     min-width: 400px;
-   
     padding-top: 35px;
-    /* border: 2px solid brown;
-    border-radius: 4px; */
     background-image: url(../images/shopBGnew.png);
     background-size: 440px;
     background-repeat: no-repeat;
@@ -136,21 +133,24 @@ button.store {
   flex-direction: row;
   border-top: 2px solid black;
   border-bottom: 2px solid black;
-  background-color: rgba(50,50,50,0.3);
-  min-height: 640px;
+  background-image: url(../images/bg.png);
+  min-height: 580px;
+  max-height: 580px;
   min-width: 1500px;
-  margin: 20px 0px;
+  margin: 20px auto;
 }
 .stage {
   display: flex;
   flex-direction: column;
   justify-content: center;
   border: 2px solid black;
-  background-color: rgba(245, 245, 245, 0.3);
-  height: 568px;
+  background-color: rgba(245, 245, 245, 0.1);
+  max-height: 520px;
+  min-height: 520px;
   min-width: 968px;
-  margin: 30px auto;
+  margin: 20px auto;
   padding: 4px;
+  
 }
 .ui-container {
   display: flex;
@@ -160,6 +160,7 @@ button.store {
   min-height: 50px;
   max-width: 700px;
   min-width: 700px;
+  margin: auto
 }
 .ui {
 font-family: 'Berkshire Swash', cursive; 
@@ -226,6 +227,12 @@ margin: auto;
   }
 .lootHit{
   background-color: gold
+}
+.loot-prox {
+  background-image: url(../images/loot-prox.gif);
+  background-size: 550%;
+  background-position-x: -2px;
+  background-position-y: -5px;
 }
   .boat{
   /* background-color: rgb(116, 61, 13) */

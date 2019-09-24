@@ -7,24 +7,29 @@ document.addEventListener('DOMContentLoaded', () => {
   const options = document.querySelector('#options')
   const inventory = document.querySelector('.inventory')
   const shop = document.querySelector('.shop')
+  const shopButton = document.querySelectorAll('.store')
   const stage1 = document.querySelector('.stage1')
   const stage2 = document.querySelector('.stage2')
   const stage3 = document.querySelector('.stage3')
   const cannon = document.querySelector('.cannon')
   const counter = document.querySelector('.counter')
   const balls = document.createElement('div')
+  const ships = document.getElementsByClassName('boat')
   let cannonballs = []
   const backButton = document.querySelector('button.left')
   const nextButton = document.querySelector('.right')
   const grid = document.querySelector('.grid')
-  const ambi = new Audio('seasong.mp3')
+  const ambi = new Audio('seasong2.mp3')
   const bgm = new Audio('bgm.mp3')
-  bgm.volume = 0.4;
+  const fire = new Audio('cannon.wav')
+  const missMp3 = new Audio('miss.mp3')
+  bgm.volume = 0.3;
   let gamestate = false
   const width = 20
   let cells = []
   let playerIdx = 110
   let keyLoaded = true
+  let reloading = false
   readyState()
 
   // ^^^^^ declare variables above ^^^^^
@@ -83,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cannon.appendChild(counter)
       counter.classList.add('counter')
       //LOAD THE CANNONBALLS
-      const timerId = setInterval(() => {
+      let timerId = setInterval(() => {
 
         const balls = document.createElement('div') //the object
         cannon.appendChild(balls) //the html object storing the array
@@ -108,9 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // back button
   backButton.addEventListener('click', (e) => {
     console.log('clicked')
-    
-
+    health = [1,1,1]
+    health.fill('⚓️')
+    ui[2].textContent = `${health}`
     cells = []
+    score = 0
+    ui[0].textContent = `Doubloons \n ${score}`
     grid.innerHTML = ''
     cannon.innerHTML = ''
     cannonballs = []
@@ -174,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let health = [1, 1, 1]
   health.fill('⚓️')
   ui[2].textContent = `${health}`
-  
+
 
 
   const play = document.querySelector('#play')
@@ -247,7 +255,6 @@ document.addEventListener('DOMContentLoaded', () => {
       boatV[0] = (randomiseOne(179))
       boatV.push(boatV[0] + 20)
       boatV.push(boatV[0] + 40)
-      console.log(boatV)
     }
     for (let i = 0; i < 3; i++) {
       makeBoatV()
@@ -255,6 +262,9 @@ document.addEventListener('DOMContentLoaded', () => {
         cells[e].classList.add('boat')
       })
     }
+    
+
+
     // GENERATE SIRENS
     // CREATE PLACEMENT CHECK
     let sirens = []
@@ -336,14 +346,52 @@ document.addEventListener('DOMContentLoaded', () => {
         checkLoot() //run check
       }
     }
-    for (let i = 0; loot.length < 16; i++) {
+    for (let i = 0; loot.length < 10; i++) {
       // while there is less than 20 loot, make loot
       makeLoot()
     }
-    loot.forEach((e, ) => { //style every loot there is
+    loot.forEach((e) => { //style every loot there is
       cells[e].classList.add('loot')
       console.log('loot ' + loot)
     })
+    loot.forEach((e) => {
+      function proxRoll() {
+        const roll = Math.ceil(Math.random() * 4)
+        if (roll === 1) {
+          if (cells[e + 20]) {
+            cells[e + 20].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+
+        } else if (roll === 2) {
+          if (cells[e - 20]) {
+            cells[e - 20].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+
+        } else if (roll === 3) {
+          if (cells[e + 1]) {
+            cells[e + 1].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+
+        } else if (roll === 4) {
+          if (cells[e - 1]) {
+            cells[e - 1].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+        } else if (roll === 5) {
+          cells[e].classList.add('loot-prox')
+        }
+      }
+      proxRoll()
+      proxRoll()
+    })
+
 
     //CHANCE FOR SWEET ITEMS
     function extraHealth() {
@@ -388,10 +436,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const roll = Math.ceil(Math.random() * 12)
       console.log(' ')
       console.log('you rolled a ' + roll)
-      if (roll === 1 || roll === 3 || roll === 9) {
+      if (roll === 1 || roll === 3 || roll === 9 || roll === 7) {
         console.log('you found extra life!')
         extraHealth()
-      } else if (roll === 5 || roll === 7) {
+      } else if (roll === 5) {
         console.log('youve found a Keg o Powder')
       } else if (roll === 11) {
         console.log('you found a spyglass!')
@@ -400,109 +448,214 @@ document.addEventListener('DOMContentLoaded', () => {
         extraAmmo()
       }
     }
+    // **** YE OLE SHOPPE **** //
+    // BUY CANNONBALLS
+    shopButton[1].addEventListener('click', () => {
+      if (score >= 6){
+        let newMsg = document.createElement('p')
+        let msg = document.createTextNode(`Bought 6x Cannonballs`)
+        newMsg.appendChild(msg)
+        inventory.appendChild(newMsg)
+        setTimeout(function () {
+          inventory.removeChild(newMsg)
+        }, 5000)
+        const reloadTime = setInterval(() => {
+          score--
+          const balls = document.createElement('div') //the object
+          cannon.appendChild(balls) //the html object storing the array
+          cannonballs.push(balls) //the array pushing the objects
+          ui[0].innerHTML = `Doubloons ${score}`
+          cannonballs.forEach((item) => {
+            item.classList.add('balls')
+          })
+          counter.innerHTML = `canonballs x ${cannonballs.length}`
+        }, 250)
+        setTimeout(() => {
+          clearInterval(reloadTime)
+          return
+        }, 1500)
+        //Canonballs Purchased
+      } else {
+        let newMsg = document.createElement('p')
+        let msg = document.createTextNode(`Not enough Doubloons`)
+        newMsg.appendChild(msg)
+        inventory.appendChild(newMsg)
+        setTimeout(function () {
+          inventory.removeChild(newMsg)
+        }, 5000)
+      }
+    }, 500)
 
+    //BUY LIVES
+    shopButton[2].addEventListener('click', () => {
+      if (score >= 5){
+        let newMsg = document.createElement('p')
+        let msg = document.createTextNode(`Bought an extra Life`)
+        newMsg.appendChild(msg)
+        inventory.appendChild(newMsg)
+        setTimeout(function () {
+          inventory.removeChild(newMsg)
+        }, 5000)
+        const reloadTime = setInterval(() => {
+          score--
+          health.push(1)
+          health.fill('⚓️')
+          ui[2].innerHTML = `${health}`
+        }, 250)
+        setTimeout(() => {
+          clearInterval(reloadTime)
+          return
+        }, 250)
+        //Canonballs Purchased
+      } else {
+        let newMsg = document.createElement('p')
+        let msg = document.createTextNode(`Not enough Doubloons`)
+        newMsg.appendChild(msg)
+        inventory.appendChild(newMsg)
+        setTimeout(function () {
+          inventory.removeChild(newMsg)
+        }, 5000)
+      }
+    }, 500)
     //START PLAYER @ playerIdx
     cells[playerIdx].classList.add('player')
+    
 
     // **** KEY EVENTS **** //
     //KEY DOWN LISTENER >> MOVE PLAYER
-    
+
     // ATTACK!
 
     function attack() {
+      
       //if the cell player is on has loot boats or trap, mark a hit and check for loot
       if (cells[playerIdx].classList.contains('loot', 'boat', 'trap')) {
         console.log('landed a hit..')
 
       } //if loot is the following, perform the loot check
       if (cells[playerIdx].classList.contains('loot')) {
-        console.log('you found loot')
-        let newMsg = document.createElement('p')
-        let msg = document.createTextNode(`You found 5 Dubloons!`)
-        newMsg.appendChild(msg)
-        inventory.appendChild(newMsg)
-        setTimeout(function () {
-          inventory.removeChild(newMsg)
-        }, 5000)
-        cells[playerIdx].classList.remove('loot')
-        // cells[playerIdx].classList.add('hit')
-        cells[playerIdx].classList.add('lootHit')
 
-        return score += 10
+        setTimeout(() => {
+          console.log('you found loot')
+          let newMsg = document.createElement('p')
+          let msg = document.createTextNode(`You found 6 Dubloons!`)
+          newMsg.appendChild(msg)
+          inventory.appendChild(newMsg)
+          setTimeout(function () {
+            inventory.removeChild(newMsg)
+          }, 5000)
+          cells[playerIdx].classList.remove('loot')
+          // cells[playerIdx].classList.add('hit')
+          cells[playerIdx].classList.add('lootHit')
+          return score += 6
+        }, 250)
+
       } else if (cells[playerIdx].classList.contains('boat')) {
-        console.log('you hit a boat')
-        let newMsg = document.createElement('p')
-        let msg = document.createTextNode(`You hit a boat!`)
-        newMsg.appendChild(msg)
-        inventory.appendChild(newMsg)
-        setTimeout(function () {
-          inventory.removeChild(newMsg)
-        }, 5000)
-        cells[playerIdx].classList.remove('boat')
-        // cells[playerIdx].classList.add('hit')
-        cells[playerIdx].classList.add('boatHit')
-        itemRoll()
+
+        setTimeout(() => {
+          console.log('you hit a boat')
+          let newMsg = document.createElement('p')
+          let msg = document.createTextNode(`You hit a boat!`)
+          newMsg.appendChild(msg)
+          inventory.appendChild(newMsg)
+          setTimeout(function () {
+            inventory.removeChild(newMsg)
+          }, 5000)
+          cells[playerIdx].classList.remove('boat')
+          // cells[playerIdx].classList.add('hit')
+          cells[playerIdx].classList.add('boatHit')
+          itemRoll()
+        }, 250) 
 
       } else if (cells[playerIdx].classList.contains('trap')) {
-        console.log('you hit trap and lost a life')
-        let newMsg = document.createElement('p')
-        let msg = document.createTextNode(`You just lost a life!`)
-        newMsg.appendChild(msg)
-        inventory.appendChild(newMsg)
-        setTimeout(function () {
-          inventory.removeChild(newMsg)
-        }, 5000)
-        cells[playerIdx].classList.remove('trap')
-        // cells[playerIdx].classList.add('hit')
-        cells[playerIdx].classList.add('trapHit')
-        health.pop()
-        console.log(health + 'health')
-        health.fill('⚓️')
-        return ui[2].textContent = `${health}`
+        setTimeout(() => {
+          console.log('you hit trap and lost a life')
+          let newMsg = document.createElement('p')
+          let msg = document.createTextNode(`You just lost a life!`)
+          newMsg.appendChild(msg)
+          inventory.appendChild(newMsg)
+          setTimeout(function () {
+            inventory.removeChild(newMsg)
+          }, 5000)
+          cells[playerIdx].classList.remove('trap')
+          // cells[playerIdx].classList.add('hit')
+          cells[playerIdx].classList.add('trapHit')
+          health.pop()
+          console.log(health + 'health')
+          health.fill('⚓️')
+          return ui[2].textContent = `${health}`
+        }, 250)
+
       } else if (cells[playerIdx].classList.contains('siren')) {
-        console.log('you hit a siren... she steals 5 Doubloons')
-        let newMsg = document.createElement('p')
-        let msg = document.createTextNode(`You hit a siren! \rLose 5 Dubloons`)
-        newMsg.appendChild(msg)
-        inventory.appendChild(newMsg)
-        setTimeout(function () {
-          inventory.removeChild(newMsg)
-        }, 5000)
-        cells[playerIdx].classList.remove('siren')
-        // cells[playerIdx].classList.add('hit')
-        cells[playerIdx].classList.add('sirenHit')
-        return score -= 5
+        setTimeout(() => {
+          console.log('you hit a siren... she steals 5 Doubloons')
+          let newMsg = document.createElement('p')
+          let msg = document.createTextNode(`You hit a siren! \rLose 5 Dubloons`)
+          newMsg.appendChild(msg)
+          inventory.appendChild(newMsg)
+          setTimeout(function () {
+            inventory.removeChild(newMsg)
+          }, 5000)
+          cells[playerIdx].classList.remove('siren')
+          // cells[playerIdx].classList.add('hit')
+          cells[playerIdx].classList.add('sirenHit')
+          return score -= 5
+        },250)
+
       } else {
-        console.log('you missed')
-        let newMsg = document.createElement('p')
-        let msg = document.createTextNode(`You didnt hit anything...`)
-        newMsg.appendChild(msg)
-        inventory.appendChild(newMsg)
-        setTimeout(function () {
-          inventory.removeChild(newMsg)
-        }, 5000)
-        cells[playerIdx].classList.add('miss')
-        cells[playerIdx].classList.add('hit')
+        setTimeout(() => {
+          missMp3.play()
+          console.log('you missed')
+          let newMsg = document.createElement('p')
+          let msg = document.createTextNode(`You didnt hit anything...`)
+          newMsg.appendChild(msg)
+          inventory.appendChild(newMsg)
+          setTimeout(function () {
+            inventory.removeChild(newMsg)
+          }, 5000)
+          cells[playerIdx].classList.add('miss')
+          cells[playerIdx].classList.add('hit')
+        },250) 
       }
+    }
+
+    // LET THE CANNON RELOAD 
+    function reload() {
+      reloading = true
+      setTimeout(() => {
+        reloading = false
+      }, 2000)
+      console.log('firing cannon...')
     }
 
     function attackCheck() {
       //if the cell, the player is on has not been attacked and there are cannonballs
-      if (cells[playerIdx].classList.contains('attack') === false && cannon.childNodes.length > 1 && health.length > 0) {
-        let ammo = document.querySelector('.balls')
-        cannon.removeChild(ammo)
-        console.log(playerIdx)
-        console.log('attack!..')
-        attack()
-        counter.innerHTML = `canonballs x ${cannon.childElementCount - 1}`
-        return cells[playerIdx].classList.add('attack')
+      if (cells[playerIdx].classList.contains('attack') === false && cannon.childNodes.length > 1 && health.length > 0 && reloading === false) { 
+        reload()
+        setTimeout(() => {
+          let ammo = document.querySelector('.balls')
+          cannon.removeChild(ammo)
+          cannonballs.pop()
+          console.log(playerIdx)
+          console.log('attack!..')
+          attack()
+          counter.innerHTML = `canonballs x ${cannon.childElementCount - 1}`
+          return cells[playerIdx].classList.add('attack')
+        }, 2000)  
       } else {
         console.log('unable to attack, check attack conditions')
-        return
       }
     }
+
     document.addEventListener('keydown', (e) => {
       if (e.keyCode === 32) {
+        fire.play()
+        // console.log(ships)
+        if (ships.length === 1){
+          setTimeout(()=>{
+            window.alert('you win')
+          },250)
+        }
         attackCheck()
         if (health.length === 0) {
           console.log('you lose!')
@@ -511,35 +664,39 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
   })
-  function keyPress () {
+
+  function keyPress() {
     if (keyLoaded === true) {
       document.addEventListener('keydown', (e) => {
-        console.log('key pressed')
-        cells[playerIdx].classList.remove('player')
-        const x = playerIdx % width
-        const y = Math.floor(playerIdx / width)
-        switch (e.keyCode) {
-          //left
-          case 37: if (x > 0) playerIdx -= 1
-            break
-          case 65: if (x > 0) playerIdx -= 1
-            break
-          // up  
-          case 38: if (y > 0) playerIdx -= width
-            break
-          case 87: if (y > 0) playerIdx -= width
-            break
-          // right
-          case 39: if (x < width - 1) playerIdx += 1
-            break
-          case 68: if (x < width - 1) playerIdx += 1
-            break
-          //down  
-          case 40: if (y < 10) playerIdx += width
-            break
-          case 83: if (y < 10) playerIdx += width
-            break
+        if (!reloading){
+          console.log('key pressed')
+          cells[playerIdx].classList.remove('player')
+          const x = playerIdx % width
+          const y = Math.floor(playerIdx / width)
+          switch (e.keyCode) {
+            //left
+            case 37: if (x > 0) playerIdx -= 1
+              break
+            case 65: if (x > 0) playerIdx -= 1
+              break
+            // up  
+            case 38: if (y > 0) playerIdx -= width
+              break
+            case 87: if (y > 0) playerIdx -= width
+              break
+            // right
+            case 39: if (x < width - 1) playerIdx += 1
+              break
+            case 68: if (x < width - 1) playerIdx += 1
+              break
+            //down  
+            case 40: if (y < 10) playerIdx += width
+              break
+            case 83: if (y < 10) playerIdx += width
+              break
+          }
         }
+      
         cells[playerIdx].classList.add('player')
         keyLoaded = false
       })//END OF KEY DOWN LISTENER
