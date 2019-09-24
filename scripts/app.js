@@ -21,9 +21,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const grid = document.querySelector('.grid')
   const ambi = new Audio('seasong2.mp3')
   const bgm = new Audio('bgm.mp3')
-  const fire = new Audio('cannon.wav')
+  bgm.volume = 0.3
+  const fire = new Audio('cannon.mp3')
   const missMp3 = new Audio('miss.mp3')
-  bgm.volume = 0.3;
+  const boatMp3 = new Audio('boathit.mp3')
+  const lootMp3 = new Audio('loothit.mp3')
+  lootMp3.volume = 0.6
+  const trapMp3 = new Audio('traphit.mp3')
+  const sirenMp3 = new Audio('sirenhit.mp3')
+  const BuyLifeMp3 = new Audio('buyLife.mp3')
+  BuyLifeMp3.volume = 0.8
+  const BuyAmmoMp3 = new Audio('buyammo.mp3')
+  
   let gamestate = false
   const width = 20
   let cells = []
@@ -451,7 +460,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // **** YE OLE SHOPPE **** //
     // BUY CANNONBALLS
     shopButton[1].addEventListener('click', () => {
-      if (score >= 6){
+      if (score >= 5){
+        BuyAmmoMp3.play()
         let newMsg = document.createElement('p')
         let msg = document.createTextNode(`Bought 6x Cannonballs`)
         newMsg.appendChild(msg)
@@ -488,24 +498,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //BUY LIVES
     shopButton[2].addEventListener('click', () => {
-      if (score >= 5){
-        let newMsg = document.createElement('p')
-        let msg = document.createTextNode(`Bought an extra Life`)
+      if (score >= 6){
+        BuyLifeMp3.play()
+        const newMsg = document.createElement('p')
+        const msg = document.createTextNode('Bought an extra Life')
         newMsg.appendChild(msg)
         inventory.appendChild(newMsg)
         setTimeout(function () {
           inventory.removeChild(newMsg)
         }, 5000)
-        const reloadTime = setInterval(() => {
-          score--
+        let reloadTime = setInterval(() => {
+          score -= 6
           health.push(1)
           health.fill('⚓️')
           ui[2].innerHTML = `${health}`
-        }, 250)
+          ui[0].textContent = `Doubloons \n ${score}`
+        }, 100)
         setTimeout(() => {
           clearInterval(reloadTime)
           return
-        }, 250)
+        }, 101)
         //Canonballs Purchased
       } else {
         let newMsg = document.createElement('p')
@@ -516,7 +528,7 @@ document.addEventListener('DOMContentLoaded', () => {
           inventory.removeChild(newMsg)
         }, 5000)
       }
-    }, 500)
+    })
     //START PLAYER @ playerIdx
     cells[playerIdx].classList.add('player')
     
@@ -527,7 +539,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // ATTACK!
 
     function attack() {
-      
       //if the cell player is on has loot boats or trap, mark a hit and check for loot
       if (cells[playerIdx].classList.contains('loot', 'boat', 'trap')) {
         console.log('landed a hit..')
@@ -537,6 +548,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
           console.log('you found loot')
+          lootMp3.play()
           let newMsg = document.createElement('p')
           let msg = document.createTextNode(`You found 6 Dubloons!`)
           newMsg.appendChild(msg)
@@ -547,12 +559,14 @@ document.addEventListener('DOMContentLoaded', () => {
           cells[playerIdx].classList.remove('loot')
           // cells[playerIdx].classList.add('hit')
           cells[playerIdx].classList.add('lootHit')
-          return score += 6
-        }, 250)
+          score += 6
+          ui[0].textContent = `Doubloons \n ${score}`
+        }, 850)
 
       } else if (cells[playerIdx].classList.contains('boat')) {
 
         setTimeout(() => {
+          boatMp3.play()
           console.log('you hit a boat')
           let newMsg = document.createElement('p')
           let msg = document.createTextNode(`You hit a boat!`)
@@ -565,10 +579,11 @@ document.addEventListener('DOMContentLoaded', () => {
           // cells[playerIdx].classList.add('hit')
           cells[playerIdx].classList.add('boatHit')
           itemRoll()
-        }, 250) 
+        }, 850) 
 
       } else if (cells[playerIdx].classList.contains('trap')) {
         setTimeout(() => {
+          trapMp3.play()
           console.log('you hit trap and lost a life')
           let newMsg = document.createElement('p')
           let msg = document.createTextNode(`You just lost a life!`)
@@ -584,10 +599,11 @@ document.addEventListener('DOMContentLoaded', () => {
           console.log(health + 'health')
           health.fill('⚓️')
           return ui[2].textContent = `${health}`
-        }, 250)
+        }, 850)
 
       } else if (cells[playerIdx].classList.contains('siren')) {
         setTimeout(() => {
+          sirenMp3.play()
           console.log('you hit a siren... she steals 5 Doubloons')
           let newMsg = document.createElement('p')
           let msg = document.createTextNode(`You hit a siren! \rLose 5 Dubloons`)
@@ -600,8 +616,10 @@ document.addEventListener('DOMContentLoaded', () => {
           // cells[playerIdx].classList.add('hit')
           cells[playerIdx].classList.add('sirenHit')
           return score -= 5
-        },250)
-
+        },850)
+        // if the cell the playerIdx is +/- 1 or +/- 20 from a cell that contains'trap'
+        //mark the tile '!'
+      
       } else {
         setTimeout(() => {
           missMp3.play()
@@ -615,7 +633,7 @@ document.addEventListener('DOMContentLoaded', () => {
           }, 5000)
           cells[playerIdx].classList.add('miss')
           cells[playerIdx].classList.add('hit')
-        },250) 
+        },850) 
       }
     }
 
@@ -629,6 +647,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function attackCheck() {
+      
       //if the cell, the player is on has not been attacked and there are cannonballs
       if (cells[playerIdx].classList.contains('attack') === false && cannon.childNodes.length > 1 && health.length > 0 && reloading === false) { 
         reload()
@@ -641,7 +660,7 @@ document.addEventListener('DOMContentLoaded', () => {
           attack()
           counter.innerHTML = `canonballs x ${cannon.childElementCount - 1}`
           return cells[playerIdx].classList.add('attack')
-        }, 2000)  
+        }, 1000)  
       } else {
         console.log('unable to attack, check attack conditions')
       }
