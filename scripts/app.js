@@ -39,6 +39,19 @@ document.addEventListener('DOMContentLoaded', () => {
   let playerIdx = 110
   let keyLoaded = true
   let reloading = false
+
+  // const cellRad = cells.map(function(playerIdx)  {
+  //   cells[playerIdx + 1]
+  //   cells[playerIdx - 1]
+  //   cells[playerIdx - 19]
+  //   cells[playerIdx - 20]
+  //   cells[playerIdx - 21]
+  //   cells[playerIdx + 19]
+  //   cells[playerIdx + 20]
+  //   cells[playerIdx + 21]
+  // })
+
+  
   readyState()
 
   // ^^^^^ declare variables above ^^^^^
@@ -539,6 +552,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // ATTACK!
 
     function attack() {
+      const rad = [
+        playerIdx + 1,
+        playerIdx - 1,
+        playerIdx + 19,
+        playerIdx + 20,
+        playerIdx + 21,
+        playerIdx - 19,
+        playerIdx - 20,
+        playerIdx - 21
+      ]
+      rad.map((tile) => {
+        if (cells[tile]){
+          if (cells[tile].classList.contains('trap')){
+            console.log('FOUND A TRAP')
+            cells[playerIdx].innerHTML = '!'
+          }
+        } else {
+          return
+        }
+      })
+    
+
+      console.log('you attacked', rad)
+  
       //if the cell player is on has loot boats or trap, mark a hit and check for loot
       if (cells[playerIdx].classList.contains('loot', 'boat', 'trap')) {
         console.log('landed a hit..')
@@ -619,7 +656,6 @@ document.addEventListener('DOMContentLoaded', () => {
         },850)
         // if the cell the playerIdx is +/- 1 or +/- 20 from a cell that contains'trap'
         //mark the tile '!'
-      
       } else {
         setTimeout(() => {
           missMp3.play()
@@ -660,6 +696,7 @@ document.addEventListener('DOMContentLoaded', () => {
           attack()
           counter.innerHTML = `canonballs x ${cannon.childElementCount - 1}`
           return cells[playerIdx].classList.add('attack')
+          
         }, 1000)  
       } else {
         console.log('unable to attack, check attack conditions')
