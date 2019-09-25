@@ -149,8 +149,8 @@ button.store {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 2px solid black;
-  background-color: rgba(245, 245, 245, 0.1);
+  /* border: 2px solid black;
+  background-color: rgba(245, 245, 245, 0.1); */
   max-height: 520px;
   min-height: 520px;
   min-width: 968px;
@@ -203,6 +203,7 @@ margin: auto;
 /* STAGE GRID */
 /*  */
 .grid {
+  background-color: rgba(0, 0, 0, 0.1);
   top:0px;
   align-items: center;
   display: flex;
@@ -267,7 +268,7 @@ margin: auto;
     color: red
   }
   .siren{
-    /* background-color: palevioletred */
+    background-color: palevioletred
   }
   .sirenHit{
     background-color: violet;
