@@ -94,6 +94,31 @@ span {
 /*  */
 /* STAGING ARENA */
 /*  */
+
+.stage2win {
+  display: block;
+  margin-top: 200px;
+  float: left;
+  left: 25%;
+  right: 25%;
+  position: absolute;
+  min-width: 640px;
+  min-height: 320px;
+  background-color: rgba(128, 128, 128, 0.5);
+}
+.stage2lose {
+  display: block;
+  margin-top: 200px;
+  float: left;
+  left: 25%;
+  right: 25%;
+  position: absolute;
+  min-width: 640px;
+  min-height: 320px;
+  background-color: rgba(128, 128, 128, 0.5);
+}
+
+
 .inventory {
   position: fixed;
   left: -75px;
@@ -232,8 +257,13 @@ margin: auto;
 .loot{
   /* background-color: gold; */
   }
-.lootHit{
+/* .lootHit:focus{
   background-color: gold;
+} */
+.lootHit{
+  background-image: url('../images/lootimg.png');
+  background-size: 100%;
+  background-repeat: no-repeat;
   margin: auto;
   text-align: center;
   font-size: 22px;
@@ -250,6 +280,9 @@ margin: auto;
   }
   .boatHit{
     background-color: rgb(160, 101, 25);
+    background-image: url('../images/shipimg.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
     margin: auto;
     text-align: center;
     font-size: 22px;
@@ -268,7 +301,7 @@ margin: auto;
     color: red
   }
   .siren{
-    background-color: palevioletred
+    /* background-color: palevioletred */
   }
   .sirenHit{
     background-color: violet;
@@ -293,7 +326,12 @@ margin: auto;
 /*  */
 
 .player {
-  background-color: rgba(255, 0, 0, 0.5);
+  /* background-color: rgba(255, 0, 0, 0.0); */
+  /* background-image: url("../images/circle.gif"); */
+  background-image: url('../images/crosshair.png');
+  background-size: 96%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 .attack {
   /* background-color: rgba(255, 255, 255, 0.5) */
@@ -306,20 +344,22 @@ margin: auto;
   margin: auto;
   text-align: center;
   font-size: 22px;
-  color: red;
-  
+  color: red;  
 }
-
-
-
-
 
 /*  */
 /* END OF PLAYER BASED STYLING */
 /*  */
+
 .hide {
   display: none;
 }
 .stealth {
   visibility: hidden;
 } 
+
+
+/*  */
+/* ANIMATION */
+/*  */
+

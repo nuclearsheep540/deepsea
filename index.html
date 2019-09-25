@@ -5,24 +5,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel='stylesheet' href="styles/animate.css">
   <link rel="stylesheet" href="styles/main.css">
   <script src="scripts/app.js"></script>
   <script src='scripts/game.js'></script>
-  <title>Deep Sea Battle</title>
+  <title>Shots Fired!</title>
   <script>
 
   </script>
 </head>
-
-<body>
+<div class="body"></div>
+<body class='bod'>
+  
   <header>
-    <h1>Deep Sea Battle</h1>
+    <h1><div class='logo'>Shots Fired!</div> 
+      <!-- <img src="./images/logo.png"> -->
+    </h1>
   </header>
   <main>
-    
+      <div class='stage2win hide'><h1>You win!</h1></div>
+      <div class='stage2lose hide'><h1>Avast ye swab! Ye dun out of ships and loot! Better luck next time, eh?</h1></div>
+
     <div class='flex' id='top'>
 
-      <button class='left stealth'>Back</button>
+      <button class='left stealth'>Home</button>
 
       <div class='ui-container stealth'>
         <div class='ui'>SCORE</div>
@@ -45,7 +51,7 @@
           <h2>Ye ole Shoppe</h2>
           <button class='store stealth'><p>Blindfire</p> 2x Doubloons</button>
           <button class='store'><p>Reload</p> 6x Doubloons</button>
-          <button class='store'><p>Extra Mate</p> 6x Doubloons</button>
+          <button class='store'><p>Extra Mate</p> 10x Doubloons</button>
 
             
           </div>
@@ -60,7 +66,7 @@
         </div>
 
       <div class="stage stage0 hide">
-        <p>SELECT MODE</p>
+        <h2>SELECT MODE</h2>
         <button class='mode' id='tutorial'>How To Play</button>
         <button class='mode' id='play'>Quick Battle</button>
         <button class='mode' id='story'>Story Mode</button>
@@ -70,20 +76,33 @@
 
       <div class="stage stage1 hide">
           <h1>How To Play</h1>
-          <p>As a pirate of the high seas, its your duty to collect as much booty as you can!</p>
-          <p>But alas, you lost your treasure map! Where could all the sweet loot be?</p>
-          <p>You best be careful as there are plenty of dangers in sea! </p>
-          <p>You start with 3 ships in your fleet. Make too many mistakes, and you'll lose!</p>
-          <p>Try and find all your treasure before you're out of cannonballs!</p>
-          <p>Use the arrow keys or A,S,W,D keys to move your selection, press space to fire!</p>
-          <p>What treasures will you find?... in Seep Sea Battle!</p>
+          <p class="how">Ahoy, matey!</p>
+          <p class="how">Welcome ye, to the seven seas!</p>
+          <p class="how">Avast these scurvy dogs by firin' your cannon!</p>
+          <p class="how">Navigate ye position with the arrow keys</p>
+          <p class="how">Try the A,W,S,D keys if those tickle your fancy!</p>
+          <p class="how"></p>
+          <p class="how"><button class="help1">Next</button></p>
 
 
-      </div>
+      </div>     
+      <div class="stage stage1-2 hide">
+          <h1>How To Play</h1>
+          <p class="how">Try and collect Doubloons during ye travels,</p>
+          <p class="how">they come in handy if you're short of lives or need</p>
+          <p class="how">more cannon-balls!</p>
+          <p class="how">Watch out for the dangers at sea too,</p>
+          <p class="how">Sea mines will hurt your lives, and those pesky Sirens...</p>
+          <p class="how">They may be pretty but they'll steal your Doubloons!</p>
+          <p class="how"><button class='help2'>Back</button></p>
+
+
+
+          </div>
       <!-- end of stage 1 -->
       <!--  -->
       <div class='stage stage2 hide'>
-
+       
 
         <div class="grid"></div>
       </div>
@@ -106,6 +125,8 @@
     <span>Website copyright 2019 Matt Davey :: Made with &lt;3 at GA London</span>
     
   </footer>
+
 </body>
+</div>
 
 </html>
