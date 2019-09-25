@@ -3,11 +3,17 @@
 
 /* MAIN SITE */
 body {
-  background: rgb(30, 146, 255);
+  background: rgba(30, 146, 255, 0);
   padding: 0px;
   margin: 0px;
   background-image: url(../images/sea.jpg);
+  
+}
+div.body {
+  background-image: url(../images/seanight.jpg);
   background-size: 100%;
+  background-repeat: repeat-y;
+  
 }
 h1 {
   margin:0 auto;
@@ -226,7 +232,11 @@ margin: auto;
   /* background-color: gold; */
   }
 .lootHit{
-  background-color: gold
+  background-color: gold;
+  margin: auto;
+  text-align: center;
+  font-size: 22px;
+  color: red
 }
 .loot-prox {
   background-image: url(../images/loot-prox.gif);
@@ -235,22 +245,36 @@ margin: auto;
   background-position-y: -5px;
 }
   .boat{
-  background-color: rgb(116, 61, 13)
+  /* background-color: rgb(116, 61, 13) */
   }
   .boatHit{
-    background-color: burlywood
+    background-color: rgb(160, 101, 25);
+    margin: auto;
+    text-align: center;
+    font-size: 22px;
+    color: red
   }
   .trap{
-  background-color: blueviolet
+  /* background-color: blueviolet */
   }
   .trapHit{
     background-color: purple
   }
+  .trap-prox {
+    margin: auto;
+    text-align: center;
+    font-size: 22px;
+    color: red
+  }
   .siren{
-    background-color: palevioletred
+    /* background-color: palevioletred */
   }
   .sirenHit{
-    background-color: violet
+    background-color: violet;
+    margin: auto;
+    text-align: center;
+    font-size: 22px;
+    color: red
   }
   .balls {
     background: black;
@@ -277,7 +301,12 @@ margin: auto;
   background-color: rgba(104, 255, 117, 0)
 }
 .miss {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
+  margin: auto;
+  text-align: center;
+  font-size: 22px;
+  color: red;
+  
 }
 
 
