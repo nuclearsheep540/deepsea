@@ -40,17 +40,19 @@ p {
 }
 .flex {
   display: flex;
+  justify-content: center;
   flex-direction: row;
 }
 #top {
   background-color: rgba(255, 0, 0, 0.0);
-  min-height: 60px;
-  min-width: 100%;
+  max-width: 50px;
+  min-width: 100px;
+  margin: auto;
   margin-top: 10px;
 }
 button {
-  min-width: 70px;
-  min-height: 15px;
+  min-width: 90px;
+  min-height: 40px;
   border-radius: 5px;
 }
 button.mode {
@@ -83,7 +85,7 @@ span {
   flex-direction: row;
 }
 .left {
-  margin: 10px auto;
+  margin: 10px 20px;
   left: 0px;
 }
 .right {

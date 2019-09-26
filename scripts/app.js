@@ -142,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(()=> {
       modebutton.forEach( element => {
         element.classList.remove('bounceOut')
+        selectModeH.classList.remove('fadeIn')
         stage2.classList.add('animated','fadeIn')
         inventory.classList.add('animated','fadeIn')
         shop.classList.add('animated','fadeIn')
@@ -294,6 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // home button
   backButton.addEventListener('click', (e) => {
+    selectModeH.classList.remove('bounceOut')
     console.log('clicked')
     // health = [1, 1, 1]
     // health.fill('⚓️')
