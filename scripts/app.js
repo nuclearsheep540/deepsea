@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const win = document.querySelector('.stage2win')
   const lose = document.querySelector('.stage2lose')
   const p = document.querySelectorAll('.how')
-  const divBody = document.querySelector('.body')
   const bod = document.querySelector('.bod')
   const modebutton = document.querySelectorAll('.mode')
   const ready = document.querySelector('.readystate')
@@ -21,8 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const stage3 = document.querySelector('.stage3')
   const cannon = document.querySelector('.cannon')
   const counter = document.querySelector('.counter')
-  const balls = document.createElement('div')
   const ships = document.getElementsByClassName('boat')
+  const selectModeH = document.querySelector('.selectModeH')
   let cannonballs = []
   const backButton = document.querySelector('button.left')
   const nextButton = document.querySelector('.right')
@@ -57,6 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let keyLoaded = true
   let reloading = false
 
+  var numb = 1
+
+  var timerId
+  
   readyState()
 
   // ^^^^^ declare variables above ^^^^^
@@ -73,13 +76,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.keyCode === 32 && gamestate === false) {
           console.log('booting up...')
           backButton.classList.remove('stealth')
-          nextButton.classList.remove('stealth')
           const ui = document.querySelector('.ui-container')
           ui.classList.remove('stealth')
           ready.classList.add('hide')
           stage0.classList.remove('hide')
           ambi.play()
           bgm.play()
+          if (grid.childElementCount < 1){
+            console.log('cant resume: no game grid')
+            modebutton[2].classList.add('noResume')
+            modebutton[2].disabled = true
+          } else if (grid.childElementCount > 1){
+            modebutton[2].classList.remove('noResume')
+            modebutton[2].disabled = false
+          }
         } else if (gamestate !== false) {
           return
         }
@@ -100,8 +110,46 @@ document.addEventListener('DOMContentLoaded', () => {
   }// end of GameStartTutorial
 
   function GameQuickPlay() {
+    clearInterval(timerId)
     pirateMp3.play()
     keyPress()
+    nextButton.classList.add('stealth')
+    numb = 363
+    health = [1, 1, 1]
+    health.fill('⚓️')
+    ui[2].textContent = `${health}`
+    cells = []
+    score = 0
+    ui[0].textContent = `Doubloons \n ${score}`
+    grid.innerHTML = ''
+    cannon.innerHTML = ''
+    cannonballs = []
+
+    //animate buttons
+
+    selectModeH.classList.add('animated','bounceOut')
+    modebutton[0].classList.add('animated','bounceOut')
+    setTimeout(()=> {
+      modebutton[1].classList.add('animated','bounceOut')
+    },50)
+    setTimeout(()=> {
+      modebutton[2].classList.add('animated','bounceOut')
+    },100)
+    setTimeout(()=> {
+      modebutton[3].classList.add('animated','bounceOut')
+    },100)
+    setTimeout(()=> {
+      modebutton.forEach( element => {
+        element.classList.remove('bounceOut')
+        stage2.classList.add('animated','fadeIn')
+        inventory.classList.add('animated','fadeIn')
+        shop.classList.add('animated','fadeIn')
+        cannon.classList.add('animated','fadeIn')
+      })
+    },100)
+    
+   
+
     setTimeout(function () {
       stage0.classList.add('hide')
     }, 1000)
@@ -116,8 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cannon.appendChild(counter)
       counter.classList.add('counter')
       //LOAD THE CANNONBALLS
-      let timerId = setInterval(() => {
-
+      const timerId = setInterval(() => {
         const balls = document.createElement('div') //the object
         cannon.appendChild(balls) //the html object storing the array
         cannonballs.push(balls) //the array pushing the objects
@@ -134,12 +181,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1500)
   }// end of setTimeout Function
 
+  function ResumePlay () {
+
+    modebutton[0].classList.add('animated','bounceOut')
+    setTimeout(()=> {
+      modebutton[1].classList.add('animated','bounceOut')
+    },50)
+    setTimeout(()=> {
+      modebutton[2].classList.add('animated','bounceOut')
+    },100)
+    setTimeout(()=> {
+      modebutton[3].classList.add('animated','bounceOut')
+    },100)
+
+    setTimeout(()=> {
+      modebutton.forEach( element => {
+        element.classList.remove('bounceOut')
+      })
+    },1000)
+
+
+
+    setTimeout(function () {
+      stage0.classList.add('hide')
+      setTimeout(function () {
+        stage2.classList.remove('hide')
+        cannon.classList.remove('hide')
+        shop.classList.remove('hide')
+        inventory.classList.remove('hide')
+        // shop.classList.remove('hide')
+        console.log('gamestart complete')
+        gamestate = true
+        console.log('gamestate ' + gamestate)
+        cannon.appendChild(counter)
+        counter.classList.add('counter')
+        cannonballs.forEach((item) => {
+          counter.innerHTML = `canonballs x ${cannonballs.length}`
+          item.classList.add('balls')
+        })
+      })
+    }, 1000)
+
+  }
+
   // **************************************//
   // ************** BUTTONS ***************//
   // **************************************//
   let dayFadeout
   let nightFadeout
   let nightMode = false
+  // ^v^v making dark mode ^v^v
   logo.addEventListener('click', () => {
     if (nightMode === false) {
       p.forEach((element) => {
@@ -200,19 +291,27 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
 
-  // back button
+  // home button
   backButton.addEventListener('click', (e) => {
     console.log('clicked')
-    health = [1, 1, 1]
-    health.fill('⚓️')
-    ui[2].textContent = `${health}`
-    cells = []
-    score = 0
-    ui[0].textContent = `Doubloons \n ${score}`
-    grid.innerHTML = ''
-    cannon.innerHTML = ''
-    cannonballs = []
+    // health = [1, 1, 1]
+    // health.fill('⚓️')
+    // ui[2].textContent = `${health}`
+    // cells = []
+    // score = 0
+    // ui[0].textContent = `Doubloons \n ${score}`
+    // grid.innerHTML = ''
+    // cannon.innerHTML = ''
+    // cannonballs = []
     gamestate = false
+    if (grid.childElementCount < 1){
+      console.log('cant resume: no game grid')
+      modebutton[2].classList.add('noResume')
+      modebutton[2].disabled = true
+    } else if (grid.childElementCount > 1){
+      modebutton[2].classList.remove('noResume')
+      modebutton[2].disabled = false
+    }
     console.log('gamestate ' + gamestate)
     setTimeout(function () {
       win.classList.add('hide')
@@ -252,7 +351,10 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (e.target.id === 'play') {
         console.log('quickplay starting')
         GameQuickPlay()
-      } else if (e.target.id === 'options') {
+      } else if (e.target.id === 'resume') {
+        console.log('resuming play ')
+        ResumePlay()
+      }else if (e.target.id === 'options') {
         if (nightMode === false) {
           console.log('toggled music')
           bgm.paused ? options.innerHTML = 'Music On' : options.innerHTML = 'Music Off'
@@ -282,7 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
   health.fill('⚓️')
   ui[2].textContent = `${health}`
 
-  let numb = 303
+  
   function loser() {
   
     lose.classList.remove('hide')
@@ -295,26 +397,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   modebutton[1].addEventListener('click', () => {
-    const timerId = setInterval(() => {
-      const seconds = numb % 60
-      const minutes = Math.floor(numb / 60)
-      const currentTime = new Date()
-      currentTime.getSeconds()
-    
-      if (numb < 0){
-        loser()
-      } else {
+    timerId = setInterval(() => {
+      var seconds = numb % 60
+      var minutes = Math.floor(numb / 60)
+      if (numb === 0){
+        setTimeout(() => {
+          clearInterval(timerId)
+          ui[1].innerHTML = `${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })} : ${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+          return loser()
+        }, 0)
+      } else if (gamestate === true) {
         numb--
         console.log(numb)
-        ui[1].innerHTML = `${minutes} : ${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+        ui[1].innerHTML = `${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })} : ${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+      } else if (gamestate === false) {
+        
+        console.log(numb)
+        ui[1].innerHTML = `${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })} : ${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
       }
     }, 1000)
-
-    setTimeout(() => {
-      clearInterval(timerId)
-      return
-    }, 303000)
   })
+
 
 
   const play = document.querySelector('#play')
@@ -366,7 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
       check()
       makeBoatH()
     }
@@ -448,7 +551,7 @@ document.addEventListener('DOMContentLoaded', () => {
         checkTrap()
       }
     }
-    for (let i = 0; trap.length < 12; i++) {
+    for (let i = 0; trap.length < 10; i++) {
       makeTrap()
     }
     trap.forEach((e, index, arr) => {
@@ -478,7 +581,7 @@ document.addEventListener('DOMContentLoaded', () => {
         checkLoot() //run check
       }
     }
-    for (let i = 0; loot.length < 10; i++) {
+    for (let i = 0; loot.length < 15; i++) {
       // while there is less than 20 loot, make loot
       makeLoot()
     }
@@ -840,12 +943,15 @@ document.addEventListener('DOMContentLoaded', () => {
       reloading = true
       setTimeout(() => {
         reloading = false
-      }, 2000)
+      }, 1500)
       console.log('firing cannon...')
     }
 
     function attackCheck() {
       console.log(health)
+      if (cannonballs.length === 0 && score < 6) {
+        loser()
+      }
 
       //if the cell, the player is on has not been attacked and there are cannonballs
       if (cells[playerIdx].classList.contains('attack') === false && cannon.childNodes.length > 1 && health.length > 0 && reloading === false) {
@@ -860,7 +966,7 @@ document.addEventListener('DOMContentLoaded', () => {
           counter.innerHTML = `canonballs x ${cannon.childElementCount - 1}`
           return cells[playerIdx].classList.add('attack')
 
-        }, 1000)
+        }, 500)
       } else {
         console.log('unable to attack, check attack conditions')
       }
@@ -881,9 +987,11 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(ships.length)
         if (ships.length === 1) {
           setTimeout(() => {
+            var seconds = numb % 60
+            var minutes = Math.floor(numb / 60)
             win.classList.remove('hide')
             let newMsg = document.createElement('p')
-            let msg = document.createTextNode(`time `)
+            let msg = document.createTextNode(`You won with ${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })} : ${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })} left!`)
             newMsg.appendChild(msg)
             win.appendChild(newMsg)
             console.log('you win')
@@ -891,7 +999,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         attackCheck()
-        if (health.length === 0 && score === 0) {
+        if (health.length === 0) {
           loser()
         }
       }
