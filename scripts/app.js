@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   var timerId
   
+
   readyState()
 
   // ^^^^^ declare variables above ^^^^^
@@ -146,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         shop.classList.add('animated','fadeIn')
         cannon.classList.add('animated','fadeIn')
       })
-    },100)
+    },1000)
     
    
 

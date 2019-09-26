@@ -1,6 +1,5 @@
 /* IMPORT */
 @import url('https://fonts.googleapis.com/css?family=Berkshire+Swash&display=swap');
-
 /* MAIN SITE */
 body {
   background: rgba(30, 146, 255, 0);
@@ -94,7 +93,6 @@ span {
 /*  */
 /* STAGING ARENA */
 /*  */
-
 .stage2win {
   display: block;
   margin-top: 200px;
@@ -117,8 +115,6 @@ span {
   min-height: 320px;
   background-color: rgba(128, 128, 128, 0.5);
 }
-
-
 .inventory {
   position: fixed;
   left: -75px;
@@ -223,7 +219,6 @@ margin: auto;
 /*  */
 /* END OF STAGING AREA */
 /*  */
-
 /*  */
 /* STAGE GRID */
 /*  */
@@ -239,7 +234,6 @@ margin: auto;
   max-width: 770px;
   margin: 0 auto;
 }
-
 .grid div {
   border: 1px solid rgba(0, 0, 0, 0.05);
   margin: 0px 0px;
@@ -250,7 +244,6 @@ margin: auto;
 /*  */
 /* END OF STAGE GRID */
 /*  */
-
 /*  */
 /* OBJECTS */
 /*  */
@@ -320,11 +313,9 @@ margin: auto;
     min-height: 20px;
     max-height: 20px;
   }
-
 /*  */
 /* PLAYER BASED STYLING */
 /*  */
-
 .player {
   /* background-color: rgba(255, 0, 0, 0.0); */
   /* background-image: url("../images/circle.gif"); */
@@ -346,20 +337,15 @@ margin: auto;
   font-size: 22px;
   color: red;  
 }
-
 /*  */
 /* END OF PLAYER BASED STYLING */
 /*  */
-
 .hide {
   display: none;
 }
 .stealth {
   visibility: hidden;
 } 
-
-
 /*  */
 /* ANIMATION */
 /*  */
-
