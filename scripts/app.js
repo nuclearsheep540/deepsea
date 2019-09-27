@@ -99,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }//end of readyState
 
   function GameStartTutorial() {
+    
     stage2.classList.remove('fadeOut')
     inventory.classList.remove('fadeOut')
     shop.classList.remove('fadeOut')
@@ -536,13 +537,12 @@ document.addEventListener('DOMContentLoaded', () => {
       boatV.push(boatV[0] + 20)
       boatV.push(boatV[0] + 40)
     }
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
       makeBoatV()
       boatV.forEach((e) => {
         cells[e].classList.add('boat')
       })
     }
-
 
 
     // GENERATE SIRENS
@@ -596,7 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
         checkTrap()
       }
     }
-    for (let i = 0; trap.length < 10; i++) {
+    for (let i = 0; trap.length < 8; i++) {
       makeTrap()
     }
     trap.forEach((e) => {
@@ -626,7 +626,7 @@ document.addEventListener('DOMContentLoaded', () => {
         checkLoot() //run check
       }
     }
-    for (let i = 0; loot.length < 15; i++) {
+    for (let i = 0; loot.length < 16; i++) {
       // while there is less than 20 loot, make loot
       makeLoot()
     }
@@ -637,7 +637,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loot.forEach((e) => { //show proximity of loot
       function proxRoll() {
-        const roll = Math.ceil(Math.random() * 9)
+        const roll = Math.floor(randomiseOne(10))
         if (roll === 1) {
           if (cells[e + 19]) {
             cells[e + 19].classList.add('loot-prox')
@@ -660,42 +660,42 @@ document.addEventListener('DOMContentLoaded', () => {
           }
 
         } else if (roll === 4) {
-          if (cells[e]) {
-            cells[e].classList.add('loot-prox')
-          } else {
-            proxRoll()
-          }
-        } else if (roll === 5) {
           if (cells[e - 1]) {
             cells[e - 1].classList.add('loot-prox')
           } else {
             proxRoll()
           }
 
-        } else if (roll === 6) {
+        } else if (roll === 5) {
           if (cells[e + 1]) {
             cells[e + 1].classList.add('loot-prox')
           } else {
             proxRoll()
           }
 
-        } else if (roll === 7) {
+        } else if (roll === 6) {
           if (cells[e + 19]) {
             cells[e + 19].classList.add('loot-prox')
           } else {
             proxRoll()
           }
 
-        } else if (roll === 8) {
+        } else if (roll === 7) {
           if (cells[e + 20]) {
             cells[e + 20].classList.add('loot-prox')
           } else {
             proxRoll()
           }
 
-        } else if (roll === 9) {
+        } else if (roll === 8) {
           if (cells[e + 21]) {
             cells[e + 21].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+        } else if (roll === 9 || roll === 10) {
+          if (cells[e]) {
+            cells[e].classList.add('loot-prox')
           } else {
             proxRoll()
           }
