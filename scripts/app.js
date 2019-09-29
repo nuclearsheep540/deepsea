@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
   var numb = 1
 
   var timerId
-  
+
 
   readyState()
 
@@ -83,11 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
           stage0.classList.remove('hide')
           ambi.play()
           bgm.play()
-          if (grid.childElementCount < 1){
+          if (grid.childElementCount < 1) {
             console.log('cant resume: no game grid')
             modebutton[2].classList.add('noResume')
             modebutton[2].disabled = true
-          } else if (grid.childElementCount > 1){
+          } else if (grid.childElementCount > 1) {
             modebutton[2].classList.remove('noResume')
             modebutton[2].disabled = false
           }
@@ -98,30 +98,122 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }//end of readyState
 
+
+  // **** YE OLE SHOPPE **** //
+  // BUY CANNONBALLS
+  shopButton[1].addEventListener('click', (e) => {
+    console.log(e)
+    if (score >= 6) {
+      shopButton[1].disabled = true
+      console.log('shop testing - input receieved')
+      BuyAmmoMp3.play()
+      const newMsg = document.createElement('p')
+      const msg = document.createTextNode('Bought 6x Cannonballs')
+      newMsg.appendChild(msg)
+      inventory.appendChild(newMsg)
+
+      setTimeout(function () {
+        inventory.removeChild(newMsg)
+        
+      }, 8000)
+      setTimeout(function () {
+        shopButton[1].disabled = false
+      },1000)
+
+      const reloadTime = setInterval(() => {
+        score--
+        const balls = document.createElement('div') //the object
+        cannon.appendChild(balls) //the html object storing the array
+        cannonballs.push(balls) //the array pushing the objects
+        ui[0].innerHTML = `Doubloons ${score}`
+        cannonballs.forEach((item) => {
+          item.classList.add('balls')
+        })
+        counter.innerHTML = `canonballs x ${cannonballs.length}`
+      }, 250)
+      setTimeout(() => {
+        shopButton[1].blur()
+        clearInterval(reloadTime)
+        return
+      }, 1500)
+
+      //Canonballs Purchased
+    } else {
+      const newMsg = document.createElement('p')
+      const msg = document.createTextNode('Not enough Doubloons')
+      newMsg.appendChild(msg)
+      inventory.appendChild(newMsg)
+      setTimeout(function () {
+        inventory.removeChild(newMsg)
+      }, 8000)
+    }
+  }, 500)
+
+
+  //BUY LIVES
+  shopButton[2].addEventListener('click', () => {
+    if (score >= 10) {
+      BuyLifeMp3.play()
+      let newMsg = document.createElement('p')
+      let msg = document.createTextNode('Bought an extra Life')
+      newMsg.appendChild(msg)
+      inventory.appendChild(newMsg)
+      setTimeout(function () {
+        inventory.removeChild(newMsg)
+      }, 5000)
+      let reloadTime = setInterval(() => {
+        score -= 10
+        health.push(1)
+        health.fill('⚓️')
+        ui[2].innerHTML = `${health}`
+        ui[0].textContent = `Doubloons \n ${score}`
+      }, 100)
+      setTimeout(() => {
+        shopButton[2].blur()
+        clearInterval(reloadTime)
+        return
+      }, 101)
+      //Canonballs Purchased
+    } else {
+      let newMsg = document.createElement('p')
+      let msg = document.createTextNode('Not enough Doubloons')
+      newMsg.appendChild(msg)
+      inventory.appendChild(newMsg)
+      setTimeout(function () {
+        inventory.removeChild(newMsg)
+      }, 8000)
+    }
+  })
+
+
+
+
+  // end of shop button
+
   function GameStartTutorial() {
-    
+
     stage2.classList.remove('fadeOut')
     inventory.classList.remove('fadeOut')
     shop.classList.remove('fadeOut')
     cannon.classList.remove('fadeOut')
 
-    selectModeH.classList.add('animated','bounceOut')
-    modebutton[0].classList.add('animated','bounceOut')
-    setTimeout(()=> {
-      modebutton[1].classList.add('animated','bounceOut')
-    },50)
-    setTimeout(()=> {
-      modebutton[2].classList.add('animated','bounceOut')
-    },100)
-    setTimeout(()=> {
-      modebutton[3].classList.add('animated','bounceOut')
-    },100)
+    selectModeH.classList.add('animated', 'bounceOut')
+    modebutton[0].classList.add('animated', 'bounceOut')
+    setTimeout(() => {
+      modebutton[1].classList.add('animated', 'bounceOut')
+    }, 50)
+    setTimeout(() => {
+      modebutton[2].classList.add('animated', 'bounceOut')
+    }, 100)
+    setTimeout(() => {
+      modebutton[3].classList.add('animated', 'bounceOut')
+    }, 100)
 
-    setTimeout(()=> {
-      modebutton.forEach( element => {
+    setTimeout(() => {
+      modebutton.forEach(element => {
         element.classList.remove('bounceOut')
       })
-    },1000)
+    }, 1000)
 
     gamestate = true
     setTimeout(function () {
@@ -156,27 +248,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //animate buttons
 
-    selectModeH.classList.add('animated','bounceOut')
-    modebutton[0].classList.add('animated','bounceOut')
-    setTimeout(()=> {
-      modebutton[1].classList.add('animated','bounceOut')
-    },50)
-    setTimeout(()=> {
-      modebutton[2].classList.add('animated','bounceOut')
-    },100)
-    setTimeout(()=> {
-      modebutton[3].classList.add('animated','bounceOut')
-    },100)
-    setTimeout(()=> {
-      modebutton.forEach( element => {
+    selectModeH.classList.add('animated', 'bounceOut')
+    modebutton[0].classList.add('animated', 'bounceOut')
+    setTimeout(() => {
+      modebutton[1].classList.add('animated', 'bounceOut')
+    }, 50)
+    setTimeout(() => {
+      modebutton[2].classList.add('animated', 'bounceOut')
+    }, 100)
+    setTimeout(() => {
+      modebutton[3].classList.add('animated', 'bounceOut')
+    }, 100)
+    setTimeout(() => {
+      modebutton.forEach(element => {
         element.classList.remove('bounceOut')
         selectModeH.classList.remove('fadeIn')
-        stage2.classList.add('animated','fadeIn')
-        inventory.classList.add('animated','fadeIn')
-        shop.classList.add('animated','fadeIn')
-        cannon.classList.add('animated','fadeIn')
+        stage2.classList.add('animated', 'fadeIn')
+        inventory.classList.add('animated', 'fadeIn')
+        shop.classList.add('animated', 'fadeIn')
+        cannon.classList.add('animated', 'fadeIn')
       })
-    },1000)
+    }, 1000)
 
     setTimeout(function () {
       stage0.classList.add('hide')
@@ -209,28 +301,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1500)
   }// end of setTimeout Function
 
-  function ResumePlay () {
+  function ResumePlay() {
     stage2.classList.remove('fadeOut')
     inventory.classList.remove('fadeOut')
     shop.classList.remove('fadeOut')
     cannon.classList.remove('fadeOut')
-    selectModeH.classList.add('animated','bounceOut')
-    modebutton[0].classList.add('animated','bounceOut')
-    setTimeout(()=> {
-      modebutton[1].classList.add('animated','bounceOut')
-    },50)
-    setTimeout(()=> {
-      modebutton[2].classList.add('animated','bounceOut')
-    },100)
-    setTimeout(()=> {
-      modebutton[3].classList.add('animated','bounceOut')
-    },100)
+    selectModeH.classList.add('animated', 'bounceOut')
+    modebutton[0].classList.add('animated', 'bounceOut')
+    setTimeout(() => {
+      modebutton[1].classList.add('animated', 'bounceOut')
+    }, 50)
+    setTimeout(() => {
+      modebutton[2].classList.add('animated', 'bounceOut')
+    }, 100)
+    setTimeout(() => {
+      modebutton[3].classList.add('animated', 'bounceOut')
+    }, 100)
 
-    setTimeout(()=> {
-      modebutton.forEach( element => {
+    setTimeout(() => {
+      modebutton.forEach(element => {
         element.classList.remove('bounceOut')
       })
-    },1000)
+    }, 1000)
 
     gamestate = false
 
@@ -340,11 +432,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // cannon.innerHTML = ''
     // cannonballs = []
     gamestate = false
-    if (grid.childElementCount < 1){
+    if (grid.childElementCount < 1) {
       console.log('cant resume: no game grid')
       modebutton[2].classList.add('noResume')
       modebutton[2].disabled = true
-    } else if (grid.childElementCount > 1){
+    } else if (grid.childElementCount > 1) {
       modebutton[2].classList.remove('noResume')
       modebutton[2].disabled = false
     }
@@ -419,7 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
   health.fill('⚓️')
   ui[2].textContent = `${health}`
 
-  
+
   function loser() {
     lose.classList.remove('hide')
     const newMsg = document.createElement('p')
@@ -427,14 +519,14 @@ document.addEventListener('DOMContentLoaded', () => {
     newMsg.appendChild(msg)
     lose.appendChild(newMsg)
     console.log('you lose')
-    
+
   }
 
   modebutton[1].addEventListener('click', () => {
     timerId = setInterval(() => {
       var seconds = numb % 60
       var minutes = Math.floor(numb / 60)
-      if (numb === 0){
+      if (numb === 0) {
         setTimeout(() => {
           clearInterval(timerId)
           ui[1].innerHTML = `${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })} : ${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
@@ -445,7 +537,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // console.log(numb)
         ui[1].innerHTML = `${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })} : ${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
       } else if (gamestate === false) {
-        
+
         // console.log(numb)
         ui[1].innerHTML = `${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })} : ${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
       }
@@ -750,83 +842,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // **** YE OLE SHOPPE **** //
-    // BUY CANNONBALLS
-    
-    shopButton[1].addEventListener('click', (e) => {
-      console.log(e)
-      if (score >= 6) {
-        console.log('shop testing - input receieved')
-        BuyAmmoMp3.play()
-        const newMsg = document.createElement('p')
-        const msg = document.createTextNode('Bought 6x Cannonballs')
-        newMsg.appendChild(msg)
-        inventory.appendChild(newMsg)
-        setTimeout(function () {
-          inventory.removeChild(newMsg)
-        }, 8000)
-        const reloadTime = setInterval(() => {
-          score--
-          const balls = document.createElement('div') //the object
-          cannon.appendChild(balls) //the html object storing the array
-          cannonballs.push(balls) //the array pushing the objects
-          ui[0].innerHTML = `Doubloons ${score}`
-          cannonballs.forEach((item) => {
-            item.classList.add('balls')
-          })
-          counter.innerHTML = `canonballs x ${cannonballs.length}`
-        }, 250)
-        setTimeout(() => {
-          shopButton[1].blur()
-          clearInterval(reloadTime)
-          return
-        }, 1500)
-        //Canonballs Purchased
-      } else {
-        const newMsg = document.createElement('p')
-        const msg = document.createTextNode('Not enough Doubloons')
-        newMsg.appendChild(msg)
-        inventory.appendChild(newMsg)
-        setTimeout(function () {
-          inventory.removeChild(newMsg)
-        }, 8000)
-      }
-    }, 500)
 
-    //BUY LIVES
-    shopButton[2].addEventListener('click', () => {
-      if (score >= 10) {
-        BuyLifeMp3.play()
-        let newMsg = document.createElement('p')
-        let msg = document.createTextNode('Bought an extra Life')
-        newMsg.appendChild(msg)
-        inventory.appendChild(newMsg)
-        setTimeout(function () {
-          inventory.removeChild(newMsg)
-        }, 5000)
-        let reloadTime = setInterval(() => {
-          score -= 10
-          health.push(1)
-          health.fill('⚓️')
-          ui[2].innerHTML = `${health}`
-          ui[0].textContent = `Doubloons \n ${score}`
-        }, 100)
-        setTimeout(() => {
-          shopButton[2].blur()
-          clearInterval(reloadTime)
-          return
-        }, 101)
-        //Canonballs Purchased
-      } else {
-        let newMsg = document.createElement('p')
-        let msg = document.createTextNode('Not enough Doubloons')
-        newMsg.appendChild(msg)
-        inventory.appendChild(newMsg)
-        setTimeout(function () {
-          inventory.removeChild(newMsg)
-        }, 8000)
-      }
-    })
     //START PLAYER @ playerIdx
     cells[playerIdx].classList.add('player')
 
@@ -1035,7 +1051,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('you win')
           }, 250)
         }
-        
+
         attackCheck()
         if (health.length === 0) {
           loser()
