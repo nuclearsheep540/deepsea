@@ -58,7 +58,9 @@ The game also generates hidden trap tiles in which will take away player lives w
 
   Doubloons can be spent at the store for additional cannonballs or health and also contribute to your final end score.
 
-  Loot also has a proximity inidcator, however loot indicators are always visible on the map
+  Loot also has a proximity inidcator, however loot indicators are always visible on the map.
+
+  As well as loot, hitting ships reward the player with additional loot. Loot is decided via RNG on a 12-die roll, any even number will return ammo, 1, 3 and 5 results in health, anything else wont return a reward.
 
   ![Game logo](images/md/arc.png)
 
@@ -86,10 +88,11 @@ Arrow Keys, AWSD Keys are programmed to move the attack cursor and Spacebar is p
 ![stage2inPlay](images/md/stage2inPlay.png)
 
 Visuals indicate what you're interacting with:
+* A navigator confirms every hit, miss and event that occurs in-game
 * Treasure chests indicate you've struck Doubloons
 * Ships indicate you've successfully hit a Ship
 * Sirens indicate you just hit a Siren
-* Black mins indicate you just hit a Sea Mine
+* Black mines indicate you just hit a Sea Mine
 * Red Exclamation marks indicate you're within proximity of a Sea Mine
 * Grayed blocks indicate somewhere you've attacked, which had nothing there.
 * The red crosshair indcates your current targetting position
@@ -107,5 +110,149 @@ On every attack, multiple checked are being performed:
 * What is under the tile, that needs to be displayed post-attack
 * What values are being returned to the player, post-attack
     
-*If any of these conditions dont comply, the game will react accordingly to whatever condition didnt pass the check. i.e attacking the same tile will not fire the cannon, or running out of cannons with no money left will result in a lost game, or if the player is not in play all input is to be ignored.*
+*If any of these conditions dont comply, the game will react accordingly to whatever condition didnt pass the check. i.e attacking the same tile will not fire the cannon, or running out of cannonballs with no money left will result in a lost game, or if the player is not in play all input is to be ignored.*
 
+## Procedurally Generated Logic
+
+A lot of the logic behind the game board is procedurally generated with random math alongside statement based checks.
+
+```
+    //GENERATE HORIZONTAL BOATS
+
+    const boatH = []
+    function check() {
+      boatH[0] = randomiseOne(216)
+      console.log('outside the while', boatH[0] % width)
+      while ((boatH[0] % width) > width - 3) {
+        boatH[0] = randomiseOne(216)
+        console.log('inside', boatH[0] % width)
+      }
+    }
+    function makeBoatH() {
+      boatH.push(boatH[0] + 1)
+      boatH.push(boatH[0] + 2)
+      console.log('boat h = ' + boatH)
+      boatH.forEach((e) => {
+        cells[e].classList.add('boat')
+      })
+    }
+    for (let i = 0; i < 3; i++) {
+      check()
+      makeBoatH()
+    }
+    //END OF GENERATE HORIZONTAL BOATS
+```
+
+The example above is how horizontal boats are generated behind the map, as illustrated, for every instance of a boat, a check is first performed, which once passes, the boat is generated and then styled.
+
+Using my random math function, I'm able to limit the bounds in which a random number can generate, here I am able to prevent a horizontal boat from generating past the game board's index.
+
+I also check that the boat is within 3 indices of the edge of a row, this is to prevent any generated boats from passing over multiple rows - to always pertain in the same row.
+
+Once the check is complete, a boat can generate in the next 2 adjacent cells, and be styled appropraitely. 
+#
+Single tile loot was easier to generate, however there are still plenty of vigorous checks to pass before generation is allowed to be called.
+```
+    // GENERATE LOOT
+    // CREATE PLACEMENT CHECK
+
+    const loot = []
+    function checkLoot() { 
+      loot.pop()
+      makeLoot()
+    }
+    function makeLoot() { 
+      console.log('attempting to make loot')
+      const add = (randomiseOne(219)) 
+      if (cells[add].classList.length < 1) { 
+        loot.push(add) 
+      } else {
+        checkLoot() 
+      }
+    }
+    for (let i = 0; loot.length < 20; i++) {
+      makeLoot()
+    }
+    loot.forEach((e) => { 
+      cells[e].classList.add('loot')
+      console.log('loot ' + loot)
+    })
+    ```
+    All single tile generation starts by being contained in an array, this way I am able to store all successfull tile candidates inside one variable, and pop any bad values out.
+
+    First our check makes sure that the tile selected by my RNG function, hasn't already been selected during the creation of the board. If the number is bad, it's pushed out and told to count again.
+
+    Successful numbers, one whom cell dont match any existing classes, are stored inside the array, styled, and are ready to go.
+
+    This method of generation is giving priority to the first tile-creation function called in our script. Because of this, I place the most demanding tiles first - Ships, and then Loot.
+
+    ``` 
+     loot.forEach((e) => { 
+      function proxRoll() {
+        const roll = Math.floor(randomiseOne(10))
+        if (roll === 1) {
+          if (cells[e + 19]) {
+            cells[e + 19].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+
+        } else if (roll === 2) {
+          if (cells[e + 20]) {
+            cells[e + 20].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+
+        } else if (roll === 3) {
+          if (cells[e + 21]) {
+            cells[e + 21].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+
+        } else if (roll === 4) {
+          if (cells[e - 1]) {
+            cells[e - 1].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+
+        } else if (roll === 5) {
+          if (cells[e + 1]) {
+            cells[e + 1].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+
+        } else if (roll === 6) {
+          if (cells[e + 19]) {
+            cells[e + 19].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+
+        } else if (roll === 7) {
+          if (cells[e + 20]) {
+            cells[e + 20].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+
+        } else if (roll === 8) {
+          if (cells[e + 21]) {
+            cells[e + 21].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+        } else if (roll === 9 || roll === 10) {
+          if (cells[e]) {
+            cells[e].classList.add('loot-prox')
+          } else {
+            proxRoll()
+          }
+        }
+      }
+      proxRoll()
+    })
+    ```
