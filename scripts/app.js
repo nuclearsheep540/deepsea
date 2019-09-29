@@ -177,9 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cannon.classList.add('animated','fadeIn')
       })
     },1000)
-   
-    
-   
 
     setTimeout(function () {
       stage0.classList.add('hide')
@@ -213,12 +210,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }// end of setTimeout Function
 
   function ResumePlay () {
-    
     stage2.classList.remove('fadeOut')
     inventory.classList.remove('fadeOut')
     shop.classList.remove('fadeOut')
     cannon.classList.remove('fadeOut')
-
     selectModeH.classList.add('animated','bounceOut')
     modebutton[0].classList.add('animated','bounceOut')
     setTimeout(()=> {
@@ -238,8 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
     },1000)
 
     gamestate = false
-
-
 
     setTimeout(function () {
       stage0.classList.add('hide')
@@ -329,7 +322,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1500)
   })
 
-
   // home button
   backButton.addEventListener('click', () => {
     selectModeH.classList.remove('bounceOut')
@@ -409,7 +401,6 @@ document.addEventListener('DOMContentLoaded', () => {
           bgmNight.paused ? bgmNight.play() : bgmNight.pause()
         }
       }
-
     })//end of event listener
   )//end of modebutton
 
@@ -422,15 +413,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const ui = document.querySelectorAll('.ui')
   window.addEventListener('keydown', () => {
     ui[0].textContent = `Doubloons \n ${score}`
-
   })
+
   let health = [1, 1, 1]
   health.fill('⚓️')
   ui[2].textContent = `${health}`
 
   
   function loser() {
-  
     lose.classList.remove('hide')
     const newMsg = document.createElement('p')
     const msg = document.createTextNode('you lose!')
@@ -452,11 +442,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 0)
       } else if (gamestate === true) {
         numb--
-        console.log(numb)
+        // console.log(numb)
         ui[1].innerHTML = `${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })} : ${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
       } else if (gamestate === false) {
         
-        console.log(numb)
+        // console.log(numb)
         ui[1].innerHTML = `${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })} : ${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
       }
     }, 1000)
@@ -704,7 +694,6 @@ document.addEventListener('DOMContentLoaded', () => {
       proxRoll()
     })
 
-
     //CHANCE FOR SWEET ITEMS
     function extraHealth() {
       health.push(1)
@@ -718,6 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
         inventory.removeChild(newMsg)
       }, 8000)
     }
+
     // function kegPowder() {
     //   //make next attack hit adjacent tiles
     // }
@@ -759,10 +749,14 @@ document.addEventListener('DOMContentLoaded', () => {
         extraAmmo()
       }
     }
+
     // **** YE OLE SHOPPE **** //
     // BUY CANNONBALLS
-    shopButton[1].addEventListener('click', () => {
+    
+    shopButton[1].addEventListener('click', (e) => {
+      console.log(e)
       if (score >= 6) {
+        console.log('shop testing - input receieved')
         BuyAmmoMp3.play()
         const newMsg = document.createElement('p')
         const msg = document.createTextNode('Bought 6x Cannonballs')
@@ -803,14 +797,14 @@ document.addEventListener('DOMContentLoaded', () => {
     shopButton[2].addEventListener('click', () => {
       if (score >= 10) {
         BuyLifeMp3.play()
-        const newMsg = document.createElement('p')
-        const msg = document.createTextNode('Bought an extra Life')
+        let newMsg = document.createElement('p')
+        let msg = document.createTextNode('Bought an extra Life')
         newMsg.appendChild(msg)
         inventory.appendChild(newMsg)
         setTimeout(function () {
           inventory.removeChild(newMsg)
         }, 5000)
-        const reloadTime = setInterval(() => {
+        let reloadTime = setInterval(() => {
           score -= 10
           health.push(1)
           health.fill('⚓️')
@@ -824,8 +818,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 101)
         //Canonballs Purchased
       } else {
-        const newMsg = document.createElement('p')
-        const msg = document.createTextNode('Not enough Doubloons')
+        let newMsg = document.createElement('p')
+        let msg = document.createTextNode('Not enough Doubloons')
         newMsg.appendChild(msg)
         inventory.appendChild(newMsg)
         setTimeout(function () {
