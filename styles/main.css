@@ -185,6 +185,8 @@ button.store {
   border-top: 2px solid black;
   border-bottom: 2px solid black;
   background-image: url(../images/bg.png);
+  background-repeat: no-repeat;
+  background-position: center;
   min-height: 540px;
   max-height: 500px;
   min-width: 100%;
