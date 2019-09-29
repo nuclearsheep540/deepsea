@@ -36,6 +36,11 @@ A win condition is met once the player takes out all the ships. A total score is
     *(excluding starting money and excluding any losses throughout the game)*
 * Every health remaining rewards 10 points
 
+Lose conditions are defined, if any of the following are met:
+
+* The timer runs out
+* Player runs out of health
+* Player runs out of Cannonballs and has less than 6 Doubloons to purchase more
 
 The game also generates hidden trap tiles in which will take away player lives when activated.
 
@@ -61,7 +66,46 @@ The game also generates hidden trap tiles in which will take away player lives w
 Shots Fired is deployed via GitHub io and can be found at 
 https://nuclearsheep540.github.io/deepsea/
 
-# Architecture
+# Design
+
+In order to work around google chromes auto-play blocker, Shots Fired! has a landing page requesting user input to initate the page's logic and assets.
+
+![start](images/md/start.png)
+
+In order to support multiple layers within the site, I built a 'home page' for the game. All 'pages' are controlled with event listeners toggling CSS styling, this prevents users from making multiple calls to a server every time they want to navigate through the game menus, and also creates a more steamlined experience, visually as well as in terms of responsiveness.
+
+![home](images/md/home.png)
+
+
+
 The player starts in the centre of a 20x11 (220 tile) map.
 
-Arrow Keys, AWSD Keys are programmed to move the attack cursor and Spacebar is programmed to perform an attack
+Arrow Keys, AWSD Keys are programmed to move the attack cursor and Spacebar is programmed to perform an attack.
+
+![stage2](images/md/stage2.png)
+![stage2inPlay](images/md/stage2inPlay.png)
+
+Visuals indicate what you're interacting with:
+* Treasure chests indicate you've struck Doubloons
+* Ships indicate you've successfully hit a Ship
+* Sirens indicate you just hit a Siren
+* Black mins indicate you just hit a Sea Mine
+* Red Exclamation marks indicate you're within proximity of a Sea Mine
+* Grayed blocks indicate somewhere you've attacked, which had nothing there.
+* The red crosshair indcates your current targetting position
+
+On every attack, multiple checked are being performed:
+* If the game has started yet
+
+ *The game can be paused, and navigated away mid-game by clicking the home button at any point*
+
+* Is the player still in-play
+* Are attack conditions met; 
+    * Has the canon has successfully completed it's re-loaded
+    * Are there sufficient cannonballs remaining
+    * Has the tile targeted, not already been fired at
+* What is under the tile, that needs to be displayed post-attack
+* What values are being returned to the player, post-attack
+    
+*If any of these conditions dont comply, the game will react accordingly to whatever condition didnt pass the check. i.e attacking the same tile will not fire the cannon, or running out of cannons with no money left will result in a lost game, or if the player is not in play all input is to be ignored.*
+
