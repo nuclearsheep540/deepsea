@@ -122,16 +122,13 @@ A lot of the logic behind the game board is procedurally generated with random m
     const boatH = []
     function check() {
       boatH[0] = randomiseOne(216)
-      console.log('outside the while', boatH[0] % width)
       while ((boatH[0] % width) > width - 3) {
         boatH[0] = randomiseOne(216)
-        console.log('inside', boatH[0] % width)
       }
     }
     function makeBoatH() {
       boatH.push(boatH[0] + 1)
       boatH.push(boatH[0] + 2)
-      console.log('boat h = ' + boatH)
       boatH.forEach((e) => {
         cells[e].classList.add('boat')
       })
@@ -140,6 +137,7 @@ A lot of the logic behind the game board is procedurally generated with random m
       check()
       makeBoatH()
     }
+
     //END OF GENERATE HORIZONTAL BOATS
 ```
 
@@ -147,12 +145,12 @@ The example above is how horizontal boats are generated behind the map, as illus
 
 Using my random math function, I'm able to limit the bounds in which a random number can generate, here I am able to prevent a horizontal boat from generating past the game board's index.
 
-I also check that the boat is within 3 indices of the edge of a row, this is to prevent any generated boats from passing over multiple rows - to always pertain in the same row.
+I also check that the boat is within 3 indices from the row edge using modulus math, this is to prevent any generated boats from passing over multiple rows - to always pertain boats in the same row as creation.
 
 Once the check is complete, a boat can generate in the next 2 adjacent cells, and be styled appropraitely. 
 #
 Single tile loot was easier to generate, however there are still plenty of vigorous checks to pass before generation is allowed to be called.
-```
+```javascript
     // GENERATE LOOT
     // CREATE PLACEMENT CHECK
 
@@ -162,7 +160,6 @@ Single tile loot was easier to generate, however there are still plenty of vigor
       makeLoot()
     }
     function makeLoot() { 
-      console.log('attempting to make loot')
       const add = (randomiseOne(219)) 
       if (cells[add].classList.length < 1) { 
         loot.push(add) 
@@ -175,84 +172,76 @@ Single tile loot was easier to generate, however there are still plenty of vigor
     }
     loot.forEach((e) => { 
       cells[e].classList.add('loot')
-      console.log('loot ' + loot)
-    })
-    ```
-    All single tile generation starts by being contained in an array, this way I am able to store all successfull tile candidates inside one variable, and pop any bad values out.
+    }) 
+```
+All single tile generation starts by being contained in an array, this way I am able to store all successfull tile candidates inside one variable, and pop any bad values out.
 
-    First our check makes sure that the tile selected by my RNG function, hasn't already been selected during the creation of the board. If the number is bad, it's pushed out and told to count again.
+First our check makes sure that the tile selected bmy RNG function, hasn't already been selected durinthe creation of the board. If the number is bad, it'pushed out and told to count again
 
-    Successful numbers, one whom cell dont match any existing classes, are stored inside the array, styled, and are ready to go.
+Successful numbers, one whom cell dont match anexisting classes, are stored inside the array, styledand are ready to go
 
-    This method of generation is giving priority to the first tile-creation function called in our script. Because of this, I place the most demanding tiles first - Ships, and then Loot.
+This method of generation is giving priority to thfirst tile-creation function called in our scriptBecause of this, I place the most demanding tilefirst - Ships, and then Loot.
 
-    ``` 
-     loot.forEach((e) => { 
-      function proxRoll() {
-        const roll = Math.floor(randomiseOne(10))
-        if (roll === 1) {
-          if (cells[e + 19]) {
-            cells[e + 19].classList.add('loot-prox')
-          } else {
-            proxRoll()
-          }
-
-        } else if (roll === 2) {
-          if (cells[e + 20]) {
-            cells[e + 20].classList.add('loot-prox')
-          } else {
-            proxRoll()
-          }
-
-        } else if (roll === 3) {
-          if (cells[e + 21]) {
-            cells[e + 21].classList.add('loot-prox')
-          } else {
-            proxRoll()
-          }
-
-        } else if (roll === 4) {
-          if (cells[e - 1]) {
-            cells[e - 1].classList.add('loot-prox')
-          } else {
-            proxRoll()
-          }
-
-        } else if (roll === 5) {
-          if (cells[e + 1]) {
-            cells[e + 1].classList.add('loot-prox')
-          } else {
-            proxRoll()
-          }
-
-        } else if (roll === 6) {
-          if (cells[e + 19]) {
-            cells[e + 19].classList.add('loot-prox')
-          } else {
-            proxRoll()
-          }
-
-        } else if (roll === 7) {
-          if (cells[e + 20]) {
-            cells[e + 20].classList.add('loot-prox')
-          } else {
-            proxRoll()
-          }
-
-        } else if (roll === 8) {
-          if (cells[e + 21]) {
-            cells[e + 21].classList.add('loot-prox')
-          } else {
-            proxRoll()
-          }
-        } else if (roll === 9 || roll === 10) {
-          if (cells[e]) {
-            cells[e].classList.add('loot-prox')
-          } else {
-            proxRoll()
-          }
+  ``` javascript
+ loot.forEach((e) => { 
+  function proxRoll() {
+    const roll = Math.floor(randomiseOne(10))
+    if (roll === 1) {
+      if (cells[e + 19]) {
+        cells[e + 19].classList.add('loot-prox')
+      } else {
+        proxRoll()
+      }
+    } ele if (roll === 2) {
+      if(cells[e + 20]) {
+         cells[e + 20].classList.add('loot-prox')
+         else {
+         proxRoll()
+        
+      } else if (roll === 3) {
+        if (cells[e + 21]) {
+          cells[e + 21].classList.add('loot-prox')
+        } else {
+          proxRoll()
+        }
+      } else if (roll === 4) {
+        if (cells[e - 1]) {
+          cells[e - 1].classList.add('loot-prox')
+        } else {
+          proxRoll()
+        }
+      } else if (roll === 5) {
+        if (cells[e + 1]) {
+          cells[e + 1].classList.add('loot-prox')
+        } else {
+          proxRoll()
+        }
+      } else if (roll === 6) {
+        if (cells[e + 19]) {
+          cells[e + 19].classList.add('loot-prox')
+        } else {
+          proxRoll()
+        }
+      } else if (roll === 7) {
+        if (cells[e + 20]) {
+          cells[e + 20].classList.add('loot-prox')
+        } else {
+          proxRoll()
+        }
+      } else if (roll === 8) {
+        if (cells[e + 21]) {
+          cells[e + 21].classList.add('loot-prox')
+        } else {
+          proxRoll()
+        }
+      } else if (roll === 9 || roll === 10) {
+        if (cells[e]) {
+          cells[e].classList.add('loot-prox')
+        } else {
+          proxRoll()
         }
       }
-      proxRoll()
-    })
-    ```
+    }
+    proxRoll()
+  })
+```
