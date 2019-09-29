@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
     health.fill('⚓️')
     ui[2].textContent = `${health}`
     cells = []
-    score = 0
+    score = 6
     ui[0].textContent = `Doubloons \n ${score}`
     grid.innerHTML = ''
     cannon.innerHTML = ''
@@ -428,15 +428,6 @@ document.addEventListener('DOMContentLoaded', () => {
     shop.classList.add('fadeOut')
     cannon.classList.add('fadeOut')
     console.log('clicked')
-    // health = [1, 1, 1]
-    // health.fill('⚓️')
-    // ui[2].textContent = `${health}`
-    // cells = []
-    // score = 0
-    // ui[0].textContent = `Doubloons \n ${score}`
-    // grid.innerHTML = ''
-    // cannon.innerHTML = ''
-    // cannonballs = []
     gamestate = false
     if (grid.childElementCount < 1) {
       console.log('cant resume: no game grid')
@@ -1082,7 +1073,7 @@ document.addEventListener('DOMContentLoaded', () => {
           console.log(doubloons)
           console.log(cannonballs.length)
           console.log(health.length * 10)
-          msg = document.createTextNode(`Your total score is ${Math.ceil(Number(numb / 10) +  doubloons + cannonballs.length + (health.length * 10))}`)
+          msg = document.createTextNode(`Your total score is ${Math.ceil(Number(numb / 10) +  doubloons + Math.int((cannonballs.length) - 1) + (health.length * 10))}`)
           totalWon.appendChild(msg)
           win.appendChild(totalWon)
           console.log('you win')
@@ -1093,7 +1084,7 @@ document.addEventListener('DOMContentLoaded', () => {
             win.removeChild(ballsWon)
             win.removeChild(healthWon)
             win.removeChild(totalWon)
-          }, 30000)
+          }, 45000)
         }
 
         attackCheck()
