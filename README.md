@@ -182,66 +182,32 @@ Successful numbers, one whom cell dont match anexisting classes, are stored insi
 
 This method of generation is giving priority to thfirst tile-creation function called in our scriptBecause of this, I place the most demanding tilefirst - Ships, and then Loot.
 
+#
+
+As for marking proximity 
+
   ``` javascript
- loot.forEach((e) => { 
-  function proxRoll() {
-    const roll = Math.floor(randomiseOne(10))
-    if (roll === 1) {
-      if (cells[e + 19]) {
-        cells[e + 19].classList.add('loot-prox')
-      } else {
-        proxRoll()
-      }
-    } ele if (roll === 2) {
-      if(cells[e + 20]) {
-         cells[e + 20].classList.add('loot-prox')
-         else {
-         proxRoll()
-        
-      } else if (roll === 3) {
-        if (cells[e + 21]) {
-          cells[e + 21].classList.add('loot-prox')
+     function attack() {
+      const rad = [
+        playerIdx + 1,
+        playerIdx - 1,
+        playerIdx + 19,
+        playerIdx + 20,
+        playerIdx + 21,
+        playerIdx - 19,
+        playerIdx - 20,
+        playerIdx - 21
+      ]
+      rad.map((tile) => {
+        if (cells[tile]) {
+          if (cells[tile].classList.contains('trap')) {
+            console.log('FOUND A TRAP')
+            alertMp3.play()
+            cells[tile].classList.add('trap-prox')
+            cells[playerIdx].innerHTML = '!'
+          }
         } else {
-          proxRoll()
+          return
         }
-      } else if (roll === 4) {
-        if (cells[e - 1]) {
-          cells[e - 1].classList.add('loot-prox')
-        } else {
-          proxRoll()
-        }
-      } else if (roll === 5) {
-        if (cells[e + 1]) {
-          cells[e + 1].classList.add('loot-prox')
-        } else {
-          proxRoll()
-        }
-      } else if (roll === 6) {
-        if (cells[e + 19]) {
-          cells[e + 19].classList.add('loot-prox')
-        } else {
-          proxRoll()
-        }
-      } else if (roll === 7) {
-        if (cells[e + 20]) {
-          cells[e + 20].classList.add('loot-prox')
-        } else {
-          proxRoll()
-        }
-      } else if (roll === 8) {
-        if (cells[e + 21]) {
-          cells[e + 21].classList.add('loot-prox')
-        } else {
-          proxRoll()
-        }
-      } else if (roll === 9 || roll === 10) {
-        if (cells[e]) {
-          cells[e].classList.add('loot-prox')
-        } else {
-          proxRoll()
-        }
-      }
-    }
-    proxRoll()
-  })
+      })
 ```
