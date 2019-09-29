@@ -116,7 +116,7 @@ On every attack, multiple checked are being performed:
 
 A lot of the logic behind the game board is procedurally generated with random math alongside statement based checks.
 
-```
+```javascript
     //GENERATE HORIZONTAL BOATS
 
     const boatH = []
