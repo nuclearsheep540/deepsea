@@ -1,6 +1,8 @@
 console.log('javascript enabled')
 document.addEventListener('DOMContentLoaded', () => {
   // vvvvv declare variables below vvvvv
+  const counterChild = document.createElement('div')
+  const counterLeft = document.querySelector('.counterLeft')
   const win = document.querySelector('.stage2win')
   const lose = document.querySelector('.stage2lose')
   const p = document.querySelectorAll('.how')
@@ -48,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
   pirateMp3.volume = 0.5
   const alertMp3 = new Audio('alert.mp3')
   const logo = document.querySelector('.logo')
+  var doubloons = 0
 
   let gamestate = false
   const width = 20
@@ -235,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pirateMp3.play()
     keyPress()
     nextButton.classList.add('stealth')
-    numb = 363
+    numb = 603
     health = [1, 1, 1]
     health.fill('⚓️')
     ui[2].textContent = `${health}`
@@ -281,8 +284,11 @@ document.addEventListener('DOMContentLoaded', () => {
       // shop.classList.remove('hide')
       console.log('gamestart complete')
       console.log('gamestate ' + gamestate)
-      cannon.appendChild(counter)
+      cannon.appendChild(counterChild)
+      counterChild.classList.add('counterLeft')
+      counterChild.appendChild(counter)
       counter.classList.add('counter')
+      
       //LOAD THE CANNONBALLS
       const timerId = setInterval(() => {
         const balls = document.createElement('div') //the object
@@ -292,11 +298,11 @@ document.addEventListener('DOMContentLoaded', () => {
           counter.innerHTML = `canonballs x ${cannonballs.length}`
           item.classList.add('balls')
         })
-      }, 50)
+      }, 90)
       setTimeout(() => {
         clearInterval(timerId)
         return
-      }, 1000)
+      }, 1620)
       //CANONBALLS READY
     }, 1500)
   }// end of setTimeout Function
@@ -518,6 +524,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const msg = document.createTextNode('you lose!')
     newMsg.appendChild(msg)
     lose.appendChild(newMsg)
+    setTimeout(() => {
+      lose.removeChild(newMsg)
+    }, 30000)
     console.log('you lose')
 
   }
@@ -708,7 +717,7 @@ document.addEventListener('DOMContentLoaded', () => {
         checkLoot() //run check
       }
     }
-    for (let i = 0; loot.length < 16; i++) {
+    for (let i = 0; loot.length < 20; i++) {
       // while there is less than 20 loot, make loot
       makeLoot()
     }
@@ -902,11 +911,11 @@ document.addEventListener('DOMContentLoaded', () => {
           // cells[playerIdx].classList.add('hit')
           cells[playerIdx].classList.add('lootHit')
           score += 6
+          doubloons += 6
           ui[0].textContent = `Doubloons \n ${score}`
         }, 850)
 
       } else if (cells[playerIdx].classList.contains('boat')) {
-
         setTimeout(() => {
           boatMp3.play()
           console.log('you hit a boat')
@@ -918,6 +927,7 @@ document.addEventListener('DOMContentLoaded', () => {
             inventory.removeChild(newMsg)
           }, 8000)
           cells[playerIdx].classList.remove('boat')
+          cells[playerIdx].classList.remove('loot-prox')
           // cells[playerIdx].classList.add('hit')
           cells[playerIdx].classList.add('boatHit')
           itemRoll()
@@ -935,6 +945,7 @@ document.addEventListener('DOMContentLoaded', () => {
             inventory.removeChild(newMsg)
           }, 8000)
           cells[playerIdx].classList.remove('trap')
+          cells[playerIdx].classList.remove('loot-prox')
           // cells[playerIdx].classList.add('hit')
           cells[playerIdx].classList.add('trapHit')
           health.pop()
@@ -955,6 +966,7 @@ document.addEventListener('DOMContentLoaded', () => {
             inventory.removeChild(newMsg)
           }, 8000)
           cells[playerIdx].classList.remove('siren')
+          cells[playerIdx].classList.remove('loot-prox')
           cells[playerIdx].classList.add('sirenHit')
           return score -= 5
         }, 850)
@@ -970,6 +982,7 @@ document.addEventListener('DOMContentLoaded', () => {
           inventory.removeChild(newMsg)
         }, 8000)
         cells[playerIdx].classList.remove('siren')
+        cells[playerIdx].classList.remove('loot-prox')
         cells[playerIdx].classList.add('sirenHit')
         health.pop()
         health.fill('⚓️')
@@ -1027,6 +1040,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function loser() {
       setTimeout(() => {
+        gamestate = false
         lose.classList.remove('hide')
         const newMsg = document.createElement('p')
         const msg = document.createTextNode('you lose!')
@@ -1040,16 +1054,46 @@ document.addEventListener('DOMContentLoaded', () => {
         fire.play()
         console.log(ships.length)
         if (ships.length === 1) {
+          var seconds = numb % 60
+          var minutes = Math.floor(numb / 60)
+          win.classList.remove('hide')
+          const timeWon = document.createElement('p')
+          let msg = document.createTextNode(`You won with ${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })} : ${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })} left!`)
+          timeWon.appendChild(msg)
+          win.appendChild(timeWon)
+
+          const doubloonWon = document.createElement('p')
+          msg = document.createTextNode(`You discovered a total of ${doubloons} doubloons!`)
+          doubloonWon.appendChild(msg)
+          win.appendChild(doubloonWon)
+
+          const ballsWon = document.createElement('p')
+          msg = document.createTextNode(`You finished with ${cannonballs.length} cannonballs left`)
+          ballsWon.appendChild(msg)
+          win.appendChild(ballsWon)
+
+          const healthWon = document.createElement('p')
+          msg = document.createTextNode(`You finished with ${health.length} health`)
+          healthWon.appendChild(msg)
+          win.appendChild(healthWon)
+
+          const totalWon = document.createElement('p')
+          console.log(numb / 10)
+          console.log(doubloons)
+          console.log(cannonballs.length)
+          console.log(health.length * 10)
+          msg = document.createTextNode(`Your total score is ${Math.ceil(Number(numb / 10) +  doubloons + cannonballs.length + (health.length * 10))}`)
+          totalWon.appendChild(msg)
+          win.appendChild(totalWon)
+          console.log('you win')
+          gamestate = false
           setTimeout(() => {
-            var seconds = numb % 60
-            var minutes = Math.floor(numb / 60)
-            win.classList.remove('hide')
-            const newMsg = document.createElement('p')
-            const msg = document.createTextNode(`You won with ${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })} : ${seconds.toLocaleString(undefined, { minimumIntegerDigits: 2 })} left!`)
-            newMsg.appendChild(msg)
-            win.appendChild(newMsg)
-            console.log('you win')
-          }, 250)
+            win.removeChild(timeWon)
+            win.removeChild(doubloonWon)
+            win.removeChild(ballsWon)
+            win.removeChild(healthWon)
+            win.removeChild(totalWon)
+          }, 30000)
         }
 
         attackCheck()
