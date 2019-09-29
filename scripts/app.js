@@ -1069,14 +1069,14 @@ document.addEventListener('DOMContentLoaded', () => {
           win.appendChild(healthWon)
 
           const totalWon = document.createElement('p')
+          msg = document.createTextNode(`Your total score is ${Math.ceil(Number(numb / 10) +  doubloons + Math.ceil((cannonballs.length) - 1) + (health.length * 10))}`)
+          totalWon.appendChild(msg)
+          win.appendChild(totalWon)
+          console.log('you win')
           console.log(numb / 10)
           console.log(doubloons)
           console.log(cannonballs.length)
           console.log(health.length * 10)
-          msg = document.createTextNode(`Your total score is ${Math.ceil(Number(numb / 10) +  doubloons + Math.int((cannonballs.length) - 1) + (health.length * 10))}`)
-          totalWon.appendChild(msg)
-          win.appendChild(totalWon)
-          console.log('you win')
           gamestate = false
           setTimeout(() => {
             win.removeChild(timeWon)
