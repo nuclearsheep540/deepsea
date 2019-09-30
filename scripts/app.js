@@ -2,7 +2,6 @@ console.log('javascript enabled')
 document.addEventListener('DOMContentLoaded', () => {
   // vvvvv declare variables below vvvvv
   const counterChild = document.createElement('div')
-  const counterLeft = document.querySelector('.counterLeft')
   const win = document.querySelector('.stage2win')
   const lose = document.querySelector('.stage2lose')
   const p = document.querySelectorAll('.how')
@@ -43,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
   lootMp3.volume = 0.6
   const trapMp3 = new Audio('audio/traphit.mp3')
   const sirenMp3 = new Audio('audio/sirenhit.mp3')
-  const BuyLifeMp3 = new Audio('audio/buyLife.mp3')
+  const BuyLifeMp3 = new Audio('audio/buylife.mp3')
   BuyLifeMp3.volume = 0.8
   const BuyAmmoMp3 = new Audio('audio/buyammo.mp3')
   const pirateMp3 = new Audio('audio/pirate.mp3')
@@ -157,14 +156,14 @@ document.addEventListener('DOMContentLoaded', () => {
   shopButton[2].addEventListener('click', () => {
     if (score >= 10) {
       BuyLifeMp3.play()
-      let newMsg = document.createElement('p')
-      let msg = document.createTextNode('Bought an extra Life')
+      const newMsg = document.createElement('p')
+      const msg = document.createTextNode('Bought an extra Life')
       newMsg.appendChild(msg)
       inventory.appendChild(newMsg)
       setTimeout(function () {
         inventory.removeChild(newMsg)
       }, 5000)
-      let reloadTime = setInterval(() => {
+      const reloadTime = setInterval(() => {
         score -= 10
         health.push(1)
         health.fill('⚓️')
@@ -178,8 +177,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 101)
       //Canonballs Purchased
     } else {
-      let newMsg = document.createElement('p')
-      let msg = document.createTextNode('Not enough Doubloons')
+      const newMsg = document.createElement('p')
+      const msg = document.createTextNode('Not enough Doubloons')
       newMsg.appendChild(msg)
       inventory.appendChild(newMsg)
       setTimeout(function () {
