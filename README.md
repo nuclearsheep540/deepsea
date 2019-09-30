@@ -20,7 +20,7 @@ Bob Bradley (PRS) for the use of Gypsy Sailor (licensed by Audio Network), Danie
 #### Breif
 I developed my own brief for this project, combining multiple flavors from two games; Minesweeper and Battleships. My goal was to build a game with many layers of game logic, which would enable the end user to make careful decicions during their gameplay, resulting in risk-reward scenarios.
 
->
+
 >Shots fired is a single player game, in which the user has limited resources to discover and take out all enemy ships that are procedurally generated on a 220 tile map.
 >
 >Ships generate in a 3x1 rectangle, and can generate either vertically or horizontally on the map.
@@ -98,7 +98,7 @@ Visuals indicate what you're interacting with:
 * The red crosshair indcates your current targetting position
 
 On every attack, multiple checked are being performed:
-* If the game has started yet
+* If the gamestate is in play
 
  *The game can be paused, and navigated away mid-game by clicking the home button at any point*
 
@@ -141,15 +141,15 @@ A lot of the logic behind the game board is procedurally generated with random m
     //END OF GENERATE HORIZONTAL BOATS
 ```
 
-The example above is how horizontal boats are generated behind the map, as illustrated, for every instance of a boat, a check is first performed, which once passes, the boat is generated and then styled.
+The example above is how horizontal boats are generated behind the map; for every instance of a boat, a check is first performed, which once passes, the boat is generated and then styled.
 
 Using my random math function, I'm able to limit the bounds in which a random number can generate, here I am able to prevent a horizontal boat from generating past the game board's index.
 
-I also check that the boat is within 3 indices from the row edge using modulus math, this is to prevent any generated boats from passing over multiple rows - to always pertain boats in the same row as creation.
+I also check that the boat is within 3 tiles from the row edge using modulus math, this is to prevent any generated boats from passing over multiple rows - to always pertain boats in the same row as creation.
 
 Once the check is complete, a boat can generate in the next 2 adjacent cells, and be styled appropraitely. 
 #
-Single tile loot was easier to generate, however there are still plenty of vigorous checks to pass before generation is allowed to be called.
+Single tile loot was easier to generate, however there are still checks to pass before generation is allowed to be called.
 ```javascript
     // GENERATE LOOT
     // CREATE PLACEMENT CHECK
@@ -174,17 +174,16 @@ Single tile loot was easier to generate, however there are still plenty of vigor
       cells[e].classList.add('loot')
     }) 
 ```
-All single tile generation starts by being contained in an array, this way I am able to store all successfull tile candidates inside one variable, and pop any bad values out.
+All single tile generation starts by being contained in an array, allowing me to store all successfull tile candidates inside one variable, and pop any bad values out.
 
-First our check makes sure that the tile selected bmy RNG function, hasn't already been selected durinthe creation of the board. If the number is bad, it'pushed out and told to count again
+First our check makes sure that the tile selected by my RNG function, hasn't already been selected durinthe creation of the board. If the number is bad, it will be popped out and told to count again
 
-Successful numbers, one whom cell dont match anexisting classes, are stored inside the array, styledand are ready to go
+Successful numbers, are stored inside the array, ready to be styled.
 
-This method of generation is giving priority to thfirst tile-creation function called in our scriptBecause of this, I place the most demanding tilefirst - Ships, and then Loot.
 
 #
 
-As for marking proximity 
+In order to generate proximity warnings, I first defined what a radius looks like, by storing variables of every adjacent tile in an array. Using this variable, I'm able to map it against any index called by the player, which can in turn check for any tiles with traps under them.
 
   ``` javascript
      function attack() {
