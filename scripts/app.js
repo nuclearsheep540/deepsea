@@ -585,21 +585,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     //GENERATE HORIZONTAL BOATS
-    const boatH = []
-
-    function check() {
-      boatH[0] = randomiseOne(216)
-      console.log('outside the while', boatH[0] % width)
-      while ((boatH[0] % width) > width - 3) {
-        boatH[0] = randomiseOne(216)
-        console.log('inside', boatH[0] % width)
-      }
-    }
-
-    for (let i = 0; i < 3; i++) {
-      check()
-      makeBoatH()
-    }
 
     function makeBoatH() {
       boatH.push(boatH[0] + 1)
@@ -608,23 +593,49 @@ document.addEventListener('DOMContentLoaded', () => {
       boatH.forEach((e) => {
         cells[e].classList.add('boat')
       })
-    } //END OF GENERATE HORIZONTAL BOAT
+    } 
+    
+    const boatH = []
+    function check() {
+      boatH[0] = randomiseOne(216)
+      console.log(boatH[0] % width)
+      while ((boatH[0] % width) > width - 3) {
+        boatH[0] = randomiseOne(216)
+        console.log(boatH[0] % width)
+      }
+    }
+
+    for (let i = 0; i < 3; i++) {
+      check()
+      makeBoatH()
+    }
+
+  //END OF GENERATE HORIZONTAL BOAT
 
     // GENERATE VERTICAL BOATS
-    const boatV = []
-    function makeBoatV() {
-      boatV.length = 1
-      boatV[0] = (randomiseOne(179))
-      boatV.push(boatV[0] + 20)
-      boatV.push(boatV[0] + 40)
-    }
-    for (let i = 0; i < 3; i++) {
-      makeBoatV()
-      boatV.forEach((e) => {
-        cells[e].classList.add('boat')
+
+    function makeBoatV(a, b, c) {
+      const boatV = [a,b,c]
+      console.log('boat v = ', boatV)
+      boatV.forEach((boat) => {
+        cells[boat].classList.add('boat')
       })
     }
 
+    function checkBoatV(){
+      const boatA = (randomiseOne(179))
+      const boatB = (boatA + 20)
+      const boatC = (boatB + 20)
+      if (!cells[boatA].classList.contains('boat') && !cells[boatB].classList.contains('boat') && !cells[boatC].classList.contains('boat')){
+        makeBoatV(boatA, boatB, boatC)
+      } else {
+        checkBoatV()
+      }
+    }
+
+    for (let i = 0; i < 3; i++) {
+      checkBoatV()
+    }
 
     // GENERATE SIRENS
     // CREATE PLACEMENT CHECK

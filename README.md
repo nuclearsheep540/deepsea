@@ -21,18 +21,17 @@ Bob Bradley (PRS) for the use of Gypsy Sailor (licensed by Audio Network), Danie
 I developed my own brief for this project, combining multiple flavors from two games; Minesweeper and Battleships. My goal was to build a game with many layers of game logic, which would enable the end user to make careful decicions during their gameplay, resulting in risk-reward scenarios.
 
 
->Shots fired is a single player game, in which the user has limited resources to discover and take out all enemy ships that are procedurally generated on a 220 tile map.
->
->Ships generate in a 3x1 rectangle, and can generate either vertically or horizontally on the map.
->
->Resources are limited; the player will start with 18 cannonballs to fire, 6 Doubloons to spend at the shop, 3 health and 10 minutes to complete a quick game.
+Shots fired is a single player game, in which the user has limited resources to discover and take out all enemy ships that are procedurally generated on a 220 tile map.
+
+Ships generate in a 3x1 rectangle, and can generate either vertically or horizontally on the map.
+
+Resources are limited; the player will start with 18 cannonballs to fire, 6 Doubloons to spend at the shop, 3 health and 10 minutes to complete a quick game.
 
 
 A win condition is met once the player takes out all the ships. A total score is accumulated by the following:
 * Every 10 seconds left on the clock rewards 1 point
 * Every canonball remaining rewards 1 point
 * Every doubloon earnt rewards 1 point 
-
     *(excluding starting money and excluding any losses throughout the game)*
 * Every health remaining rewards 10 points
 
@@ -117,25 +116,29 @@ On every attack, multiple checked are being performed:
 A lot of the logic behind the game board is procedurally generated with random math alongside statement based checks.
 
 ```javascript
-    //GENERATE HORIZONTAL BOATS
+       // GENERATE VERTICAL BOATS
 
-    const boatH = []
-    function check() {
-      boatH[0] = randomiseOne(216)
-      while ((boatH[0] % width) > width - 3) {
-        boatH[0] = randomiseOne(216)
-      }
-    }
-    function makeBoatH() {
-      boatH.push(boatH[0] + 1)
-      boatH.push(boatH[0] + 2)
-      boatH.forEach((e) => {
-        cells[e].classList.add('boat')
+    function makeBoatV(a, b, c) {
+      const boatV = [a,b,c]
+      console.log('boat v = ', boatV)
+      boatV.forEach((boat) => {
+        cells[boat].classList.add('boat')
       })
     }
+
+    function checkBoatV(){
+      const boatA = (randomiseOne(179))
+      const boatB = (boatA + 20)
+      const boatC = (boatB + 20)
+      if (!cells[boatA].classList.contains('boat') && !cells[boatB].classList.contains('boat') && !cells[boatC].classList.contains('boat')){
+        makeBoatV(boatA, boatB, boatC)
+      } else {
+        checkBoatV()
+      }
+    }
+
     for (let i = 0; i < 3; i++) {
-      check()
-      makeBoatH()
+      checkBoatV()
     }
 
     //END OF GENERATE HORIZONTAL BOATS
