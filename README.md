@@ -69,10 +69,6 @@ https://nuclearsheep540.github.io/deepsea/
 
 # Design
 
-In order to work around google chromes auto-play blocker, Shots Fired! has a landing page requesting user input to initate the page's logic and assets.
-
-![start](images/md/start.png)
-
 In order to support multiple layers within the site, I built a 'home page' for the game. All 'pages' are controlled with event listeners toggling CSS styling, this prevents users from making multiple calls to a server every time they want to navigate through the game menus, and also creates a more steamlined experience, visually as well as in terms of responsiveness.
 
 ![home](images/md/home.png)
@@ -83,7 +79,6 @@ The player starts in the centre of a 20x11 (220 tile) map.
 
 Arrow Keys, AWSD Keys are programmed to move the attack cursor and Spacebar is programmed to perform an attack.
 
-![stage2](images/md/stage2.png)
 ![stage2inPlay](images/md/stage2inPlay.png)
 
 Visuals indicate what you're interacting with:
@@ -98,9 +93,6 @@ Visuals indicate what you're interacting with:
 
 On every attack, multiple checked are being performed:
 * If the gamestate is in play
-
- *The game can be paused, and navigated away mid-game by clicking the home button at any point*
-
 * Is the player still in-play
 * Are attack conditions met; 
     * Has the canon has successfully completed it's re-loaded
@@ -146,11 +138,9 @@ A lot of the logic behind the game board is procedurally generated with random m
 
 The example above is how horizontal boats are generated behind the map; for every instance of a boat, a check is first performed, which once passes, the boat is generated and then styled.
 
-Using my random math function, I'm able to limit the bounds in which a random number can generate, here I am able to prevent a horizontal boat from generating past the game board's index.
+Using my randomiseOne math function, I'm calling the function argument as the max integer I want to return, giving me control on what the ceiling should be based on application of the function, i.e prevent a horizontal boat from generating past the game board's index.
 
-I also check that the boat is within 3 tiles from the row edge using modulus math, this is to prevent any generated boats from passing over multiple rows - to always pertain boats in the same row as creation.
-
-Once the check is complete, a boat can generate in the next 2 adjacent cells, and be styled appropraitely. 
+Once the check is complete, a three-tiled boat array can generate in the gameboard cells, and be styled appropraitely. 
 #
 Single tile loot was easier to generate, however there are still checks to pass before generation is allowed to be called.
 ```javascript
@@ -183,7 +173,6 @@ First our check makes sure that the tile selected by my RNG function, hasn't alr
 
 Successful numbers, are stored inside the array, ready to be styled.
 
-
 #
 
 In order to generate proximity warnings, I first defined what a radius looks like, by storing variables of every adjacent tile in an array. Using this variable, I'm able to map it against any index called by the player, which can in turn check for any tiles with traps under them.
@@ -213,3 +202,5 @@ In order to generate proximity warnings, I first defined what a radius looks lik
         }
       })
 ```
+#
+If I had more time to work on this project, I would refactor my game logic. I've used quite primitaive approaches to getting some logic built in aid of getting code out fast under time constraints, but would rather build my code efficiently given the time.
